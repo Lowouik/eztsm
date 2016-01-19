@@ -12,8 +12,16 @@ As of 01/19/2016, the supported features are:
   - Account management (create update delete)
   - Roles and permissions setting
 - Localization (english + french)
-- Node creation
-- Node deletion
+- Node administration
+  - Add
+  - Update
+  - Delete
+  - View details
+- TSM Status
+  - Top 50 biggest filespace
+  - Nodes without schedule
+  - Last 7 days activity
+  - Storage pool status
 - ...
 
 ## Installation
