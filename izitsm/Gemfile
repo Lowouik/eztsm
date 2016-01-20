@@ -9,6 +9,9 @@ gem 'sqlite3'
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
+#Since Rails 3.1, a JavaScript runtime has been needed for development on Ubuntu Linux. The JavaScript runtime is required to compile code for the Rails asset pipeline. For development on Ubuntu Linux it is best to install the Node.js server-side JavaScript environment.
+#If you don’t install Node.js, you’ll need to add this to the Gemfile for each Rails application you build:
+gem 'therubyracer'
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.1.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
