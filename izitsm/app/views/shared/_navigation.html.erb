@@ -2,10 +2,14 @@
   <div class="container">
     <div class="navbar-header">
       <a class="navbar-brand" href="/">IziTSM</a>
-      <%if current_user -%>
-        Logged in as <%= current_user.login %>
-        <%= link_to 'Log out', logout_path %>
-      <%end -%>
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav navbar-right">
+        <%if current_user -%>
+          <li>Logged in as <%= current_user.login %><li>
+          <li><%= link_to 'Log out', logout_path %></li>
+        <%end -%>
+      </ul>
     </div>
   </div>
 </nav>
