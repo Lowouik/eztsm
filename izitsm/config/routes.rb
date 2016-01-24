@@ -13,8 +13,8 @@ Rails.application.routes.draw do
   resources 'nodes'
 
   namespace :admin do
-    get 'config' => 'config#index'
-    put 'config' => 'config#update'
+    get 'settings' => 'settings#index'
+    put 'settings' => 'settings#update'
 
     resources 'users'
   end
