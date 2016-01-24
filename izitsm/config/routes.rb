@@ -11,6 +11,13 @@ Rails.application.routes.draw do
   post 'sessions' => 'sessions#create'
 
   resources 'nodes'
+
+  namespace :admin do
+    get 'config' => 'config#index'
+    put 'config' => 'config#update'
+
+    resources 'users'
+  end
   # Example of regular route:
     #   get 'products/:id' => 'catalog#view'
 
