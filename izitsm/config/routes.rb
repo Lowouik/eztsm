@@ -8,8 +8,9 @@ Rails.application.routes.draw do
 
   get 'login' => 'sessions#new', :as => 'login'
   get 'logout' => 'sessions#destroy', :as => 'logout'
-  
-  resources 'sessions'
+  post 'sessions' => 'sessions#create'
+
+  resources 'nodes'
   # Example of regular route:
     #   get 'products/:id' => 'catalog#view'
 
