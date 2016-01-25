@@ -19,3 +19,4 @@
 $(document).on("ready page:change", function() {
 	  $('.btn-info').tooltip();
 });
+

@@ -2,12 +2,14 @@
   <h1> Manage users</h1>
 </div>
 
+<%= link_to 'Create new user', new_admin_user_path, class: 'btn btn-primary' %><br />
+<br />
 <table class="table table-striped">
   <tr>
     <th class="col-xs-2">Login</th>
     <th class="col-xs-2">Email</th>
-    <th class="col-xs-6">Description</th>
-    <th class="col-xs-2"></th>
+    <th class="col-xs-7">Description</th>
+    <th class="col-xs-1"></th>
   </tr>
  
   <% @users.each do |user| %>
@@ -15,7 +17,7 @@
       <td><%= user.login %></td>
       <td><%= user.email %></td>
       <td><%= user.description %></td>
-      <td><%= link_to edit_admin_user_path(user), class: 'btn btn-xs btn-info', title:'Update user settings', 'data-toggle' => 'tooltip' do %><span class='glyphicon glyphicon-wrench'></span><% end %>  <%#= link_to "Permissions", edit_user_permissions_path(user) %> <%= link_to admin_user_path(user), method: :delete, data: { confirm: "Are you sure?" }, class: 'btn btn-xs btn-info', title:'Delete user', 'data-toggle' => 'tooltip' do %><span class='glyphicon glyphicon-trash'></span><% end %></td>
+      <td><%= link_to edit_admin_user_path(user), class: 'btn btn-xs btn-primary', title:'Update user settings', 'data-toggle' => 'tooltip' do %><span class='glyphicon glyphicon-wrench'></span><% end %>  <%#= link_to "Permissions", edit_user_permissions_path(user) %> <%= link_to admin_user_path(user), method: :delete, data: { confirm: "Are you sure?" }, class: 'btn btn-xs btn-danger', title:'Delete user', 'data-toggle' => 'tooltip' do %><span class='glyphicon glyphicon-trash'></span><% end %></td>
     </tr>
   <% end %>
 </table>
