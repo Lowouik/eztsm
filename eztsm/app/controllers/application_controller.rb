@@ -11,10 +11,13 @@ class ApplicationController < ActionController::Base
   end
 
   def must_be_logged_in_and_app_initialized
-    redirect_to login_path unless current_user
-    unless Setting.initialized_on or params[:controller] == "rails_settings_ui/settings"
-      flash[:info] = "First things first. Please take a minute to configure ezTSM."
-      redirect_to admin_settings_path
+    if current_user
+      unless Setting.initialized_on or params[:controller] == "rails_settings_ui/settings"
+        flash[:info] = "First things first. Please take a minute to configure ezTSM."
+        redirect_to admin_settings_path
+      end
+    else
+      redirect_to login_path
     end
   end
 end
