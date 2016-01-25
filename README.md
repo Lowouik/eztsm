@@ -1,13 +1,20 @@
-# izitsm
-Izitsm is a web frontend connected to a tsm instance providing an easy, web-oriented, way to interact with TSM.
+# eztsm
+Eztsm is a web frontend connected to a tsm instance providing an easy, web-oriented, way to interact with TSM.
+
+There are some great tools allowing to one or more TSM Server instances, but we believe these tools are a little hard to handle.
+
+Eztsm's point is to provide a simple way of performing basic operations for non expert people. Furthermore, it uses its own authenticating and permissions system, preventing users from having effective rights on TSM and in extension accesing nodes data.
+
+We believe that if you want to go further, and don't bother administrator access the whole nodes data, more evolved tools such as TSM Manager (www.tsmmanager.com) will be more appropriated.
 
 ## Features
 As of 01/19/2016, the supported features are:
 - Authentication
+- Admin backend allowing:
+  - Configuration and initialization
 
 ## Incoming Features
 - Admin backend allowing:
-  - Configuration and initialization
   - Account management (create update delete)
   - Roles and permissions setting
 - Localization (english + french)
