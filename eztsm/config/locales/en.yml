@@ -24,14 +24,14 @@ en:
     attributes:
       local_tsm:
         name: 'TSM server is local'
-        help_block: "Uncheck this box if TSM and IziTSM aren't installed on the same system. If so, don't forget to fill up the two next fields, i.e. TSM remote address and ssh port"
+        help_block: "Uncheck this box if TSM and ezTSM  aren't installed on the same system. If so, don't forget to fill up the two next fields, i.e. TSM remote address and ssh port"
       tsm_address:
         name: 'TSM remote address'
-        help_block: 'IP address or FQDN through which TSM can be remotely accessed. Leave it empty if TSM and IziTSM have been installed on the same system.'
+        help_block: 'IP address or FQDN through which TSM can be remotely accessed. Leave it empty if TSM and ezTSM have been installed on the same system.'
       ssh_port:
         name: 'SSH port'
         help_block: 'Remote SSH port'
       ssh_user:
         name: 'SSH user'
-        help_block: "System user to connect with. This account must be the one provided during IziTSM-Plugins installation and must accept ssh passwordless authentication. Leave it empty if TSM and IziTSM have been installed on the same system. For more informations about ssh passwordless authentication visit this link: http://serverfault.com/questions/620411/need-to-make-password-less-login-for-same-linux-server-with-same-user"
+        help_block: "System user to connect with. This account must be the one provided during ezTSM-Plugins installation and must accept ssh passwordless authentication. Leave it empty if TSM and ezTSM have been installed on the same system. For more informations about ssh passwordless authentication visit this link: http://serverfault.com/questions/620411/need-to-make-password-less-login-for-same-linux-server-with-same-user"
 
