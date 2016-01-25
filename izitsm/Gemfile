@@ -30,6 +30,9 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'bootstrap-sass', '~> 3.3.6'
 gem 'autoprefixer-rails'
 
+# For pagination
+gem 'will_paginate'
+
 # Even more simpler forms
 gem 'simple_form'
 
