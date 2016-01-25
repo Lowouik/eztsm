@@ -14,7 +14,7 @@ Rails.application.routes.draw do
   resources 'nodes'
 
   namespace :admin do
-    get 'settings' => 'setting#index'
+    get 'settings' => 'settings#index'
     resources 'users'
   end
   # Example of regular route:

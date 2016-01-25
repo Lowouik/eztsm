@@ -3,7 +3,6 @@
 <head>
   <title>IziTSM</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
 <body>
@@ -11,7 +10,7 @@
 <%= render 'shared/navigation' %>
 
 <div id="main-container" class="container">
-  <div class="row">
+  <div class="row bg-pink">
       <% flash.each do |name, msg| -%>
         <%= content_tag :div, msg, class: "alert alert-#{name}" %>
       <% end -%>
@@ -19,5 +18,6 @@
   </div>
 </div>
 
+<%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
 </body>
 </html>
