@@ -34,7 +34,7 @@ gem 'autoprefixer-rails'
 gem 'simple_form'
 
 # Manage settings
-#gem 'rails-settings'
+gem 'rails-settings-ui'
 gem 'rails-settings-cached', '~> 0.4.0'
 
 # Use ActiveModel has_secure_password
