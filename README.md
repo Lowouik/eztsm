@@ -3,7 +3,7 @@ ezTSM is a web frontend connected to a tsm instance providing an easy, web-orien
 
 There are some great tools allowing to one or more TSM Server instances, but we believe these tools are a little hard to handle.
 
-ezTSM's point is to provide a simple way of performing basic operations for non expert people. Furthermore, it uses its own authenticating and permissions system, preventing users from having effective rights on TSM and in extension accesing nodes data.
+ezTSM's point is to provide a simple way of performing basic operations for non expert people. Furthermore, it uses its own authenticating and permissions system, preventing users from having effective rights on TSM and in extension accessing nodes data.
 
 We believe that if you want to go further, and don't bother administrator access the whole nodes data, more evolved tools such as TSM Manager (www.tsmmanager.com) will be more appropriated.
 
