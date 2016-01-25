@@ -1,5 +1,5 @@
 class SessionsController < ApplicationController
-  skip_before_filter :must_be_logged_in_and_app_initialized, :only => [:new, :create]
+  skip_before_filter :must_be_logged_in_and_app_initialized, :only => [:new, :create, :destroy]
 
   def new
   end

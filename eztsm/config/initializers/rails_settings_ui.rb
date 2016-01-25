@@ -23,7 +23,7 @@ Rails.application.config.to_prepare do
 
     private
     def update_initialized_on
-      Setting.initialized_on ||= Time.now
+      Setting.initialized_on ||= Time.now unless Setting.count == 0
     end
   end
 end
