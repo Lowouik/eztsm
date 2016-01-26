@@ -24,7 +24,7 @@ en:
     attributes:
       local_tsm:
         name: 'TSM server is local'
-        help_block: "Uncheck this box if TSM and ezTSM  aren't installed on the same system. If so, don't forget to fill up the two next fields, i.e. TSM remote address and ssh port"
+        help_block: "Uncheck this box if TSM and ezTSM  aren't installed on the same system. If so, don't forget to fill up the three next fields, i.e. TSM remote address, ssh port, and ssh user."
       tsm_address:
         name: 'TSM remote address'
         help_block: 'IP address or FQDN through which TSM can be remotely accessed. Leave it empty if TSM and ezTSM have been installed on the same system.'

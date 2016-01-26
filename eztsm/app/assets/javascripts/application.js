@@ -17,6 +17,6 @@
 //= require_tree .
 
 $(document).on("ready page:change", function() {
-	  $('.btn-info').tooltip();
+	  $('.has-tooltip').tooltip();
 });
 

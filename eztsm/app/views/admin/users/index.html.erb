@@ -4,6 +4,10 @@
 
 <%= link_to 'Create new user', new_admin_user_path, class: 'btn btn-primary' %><br />
 <br />
+  <% @users.each do |user| -%>
+    <%= render :partial => 'admin/users/edit_user_modal', :locals => { :user => user }  %>
+  <% end -%>
+  <%= render 'shared/error_messages' %>
 <table class="table table-striped">
   <tr>
     <th class="col-xs-2">Login</th>
@@ -12,13 +16,13 @@
     <th class="col-xs-1"></th>
   </tr>
  
-  <% @users.each do |user| %>
+  <% @users.each do |user| -%>
     <tr>
       <td><%= user.login %></td>
       <td><%= user.email %></td>
       <td><%= user.description %></td>
-      <td><%= link_to edit_admin_user_path(user), class: 'btn btn-xs btn-primary', title:'Update user settings', 'data-toggle' => 'tooltip' do %><span class='glyphicon glyphicon-wrench'></span><% end %>  <%#= link_to "Permissions", edit_user_permissions_path(user) %> <%= link_to admin_user_path(user), method: :delete, data: { confirm: "Are you sure?" }, class: 'btn btn-xs btn-danger', title:'Delete user', 'data-toggle' => 'tooltip' do %><span class='glyphicon glyphicon-trash'></span><% end %></td>
+      <td><button type="button" class='btn btn-xs btn-primary has-tooltip' title='Update user settings' data-toggle='modal' data-target="#user-<%= user.id %>-modal"><span class='glyphicon glyphicon-wrench'></span></button>  <%#= link_to "Permissions", edit_user_permissions_path(user) %> <%= link_to admin_user_path(user), method: :delete, data: { confirm: "Are you sure?" }, class: 'btn btn-xs btn-danger has-tooltip', title:'Delete user', 'data-toggle' => 'tooltip' do %><span class='glyphicon glyphicon-trash'></span><% end %></td>
     </tr>
-  <% end %>
+  <% end -%>
 </table>
 <%= will_paginate @users %>

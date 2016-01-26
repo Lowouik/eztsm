@@ -1,0 +1,14 @@
+<% unless @user.nil? -%>
+  <% if @user.errors.any? -%>
+    <div id="error_explanation">
+      <div class="alert alert-danger">
+        Unable to update user <%= @user.login %>.
+      </div>
+      <ul>
+      <% @user.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end -%>
+<% end -%>
