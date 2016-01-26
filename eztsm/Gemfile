@@ -41,7 +41,10 @@ gem 'rails-settings-ui'
 gem 'rails-settings-cached', '~> 0.4.0'
 
 # Use ActiveModel has_secure_password
- gem 'bcrypt', '~> 3.1.7'
+gem 'bcrypt', '~> 3.1.7'
+
+# Client side validations
+gem 'client_side_validations'
 
 # Use Unicorn as the app server
 # gem 'unicorn'
