@@ -14,20 +14,13 @@ class Admin::UsersController < ApplicationController
     puts "user params : " + user_params.to_s
     if @user.update_attributes(user_params)
      respond_to do |format|
-        format.html { 
-        flash[:success] = "User params[:id] updated"
-        redirect_to admin_user_path
+        format.js { 
+          flash[:success] = "User #{@user.login} successfully updated"
         }
-        format.json { render json: @user, status: :updated, location: @user }
       end
     else
       respond_to do |format|
-        format.html {
-        flash[:error] = "Unable to update user"
-        @users = User.paginate(:page => params[:page])
-        render action: "index" 
-        }
-        format.json { render json: @update.errors, status: :unprocessable_entity }
+        format.js
       end
     end
   end

@@ -6,8 +6,9 @@
         <h2 class="modal-title">Edit User <%= user.login %></h2>
       </div>
       <div class="modal-body">
+        <div id="errors"></div>
         <p>
-          <%= simple_form_for user, :url => admin_user_path(user), :html => {:role => 'form'} do |f| %>
+        <%= simple_form_for user, id: 'edit_user', :url => admin_user_path(user), remote: true, :html => {:role => 'form'} do |f| %>
             <%= f.input :login %>
             <%= f.input :description %>
             <%= f.input :password, label: 'Change password' %>
