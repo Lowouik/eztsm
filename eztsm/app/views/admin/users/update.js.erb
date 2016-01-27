@@ -1,6 +1,0 @@
-<% if @user.errors.count > 0 %>
-  $('#errors').replaceWith('<%= escape_javascript(render("shared/error_messages", :formats => [:html])) %>')
-
-<% else %>
-  window.location.href='<%= admin_users_path %>'
-<% end %>

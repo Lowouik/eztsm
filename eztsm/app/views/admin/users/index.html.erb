@@ -2,7 +2,9 @@
   <h1> Manage users</h1>
 </div>
 
-<%= link_to 'Create new user', new_admin_user_path, class: 'btn btn-primary' %><br />
+<%= render :partial => 'admin/users/edit_user_modal', :locals => { :user => @user }  %>
+
+<%= link_to 'Create new user', '#', 'data-toggle' => 'modal', 'data-target' => '#user--modal', class: 'btn btn-primary' %><br />
 <br />
   <% @users.each do |user| -%>
     <%= render :partial => 'admin/users/edit_user_modal', :locals => { :user => user }  %>
