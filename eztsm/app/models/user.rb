@@ -3,5 +3,6 @@ class User < ActiveRecord::Base
   has_secure_password
     
   validates_presence_of :password_digest, :login
-  validates_uniqueness_of :login, :email
+  validates :login, :uniqueness => { :case_sensitive => false }
+  validates :email, :allow_blank => true, :uniqueness => { :case_sensitive => false }
 end

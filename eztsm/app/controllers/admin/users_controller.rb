@@ -1,6 +1,6 @@
-class Admin::UsersController < ApplicationController
+class Admin::UsersController < AdminController
   def index
-    @users = User.paginate(:page => params[:page])
+    @users = User.order(:login)
     @user = User.new
   end
 
@@ -41,6 +41,12 @@ class Admin::UsersController < ApplicationController
         format.js { render 'admin/users/user_modals_response' }
       end
     end
+  end
+
+  def destroy
+    User.find(params[:id]).destroy
+    flash[:success] = "User deleted"
+    redirect_to admin_users_url
   end
 
   private
