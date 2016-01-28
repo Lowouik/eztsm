@@ -12,18 +12,20 @@
   <%= render 'shared/error_messages' %>
 <table class="table table-striped">
   <tr>
-    <th class="col-xs-2">Login</th>
-    <th class="col-xs-2">Email</th>
-    <th class="col-xs-7">Description</th>
-    <th class="col-xs-1"></th>
+    <th width="5%">Admin</th>
+    <th width="19%">Login</th>
+    <th width="20%">Email</th>
+    <th width="50%">Description</th>
+    <th width="6%"></th>
   </tr>
  
   <% @users.each do |user| -%>
     <tr>
+      <td class="text-center"><% if user.is_admin %><span class='glyphicon glyphicon-star'><% end %>
       <td><%= user.login %></td>
       <td><%= user.email %></td>
       <td><%= user.description %></td>
-      <td><button type="button" class='btn btn-xs btn-primary has-tooltip' title='Update user settings' data-toggle='modal' data-target="#user-<%= user.id %>-modal"><span class='glyphicon glyphicon-wrench'></span></button>  <%#= link_to "Permissions", edit_user_permissions_path(user) %> <%= link_to admin_user_path(user), method: :delete, data: { confirm: "Are you sure?" }, class: 'btn btn-xs btn-danger has-tooltip', title:'Delete user', 'data-toggle' => 'tooltip' do %><span class='glyphicon glyphicon-trash'></span><% end %></td>
+      <td><button type="button" class='btn btn-xs btn-primary has-tooltip' title='Update user settings' data-toggle='modal' data-target="#user-<%= user.id %>-modal"><span class='glyphicon glyphicon-wrench'></span></button>  <%#= link_to "Permissions", edit_user_permissions_path(user) %> <%= link_to admin_user_path(user), method: :delete, data: { confirm: "You'e about to delete the user #{user.login}. Are you sure?" }, class: 'btn btn-xs btn-danger has-tooltip', title:'Delete user', 'data-toggle' => 'tooltip' do %><span class='glyphicon glyphicon-trash'></span><% end %></td>
     </tr>
   <% end -%>
 </table>
