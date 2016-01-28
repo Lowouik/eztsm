@@ -16,7 +16,7 @@ Rails.application.routes.draw do
 
   namespace :admin do
     get 'settings' => 'settings#index'
-    resources 'users'
+    resources 'users', :except => [ :show, :new ]
   end
   # Example of regular route:
     #   get 'products/:id' => 'catalog#view'
