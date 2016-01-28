@@ -1,13 +1,10 @@
 class NodesController < ApplicationController
 
   def index
-    if Setting.local_tsm
-      @nodes = `ls` 
-    else
-#      @nodes = `ssh -p #{Setting.ssh_port} #{Setting.ssh_user}@#{Setting.tsm_address} ls`
-      @nodes = `echo ssh -p #{Setting.ssh_port} #{Setting.ssh_user}@#{Setting.tsm_address} ls`
-      puts @nodes
-      render :nothing => true
-    end
+    @node_name = params[:node_name]
+    @filter = @node_name.upcase.gsub(/[^0-9A-Z\-\.]/i, '')
+    @columns = [ 'node_name', 'platform_name', 'domain_name', 'option_set', 'lastacc_time']
+    @select = tsmdb_select(@columns, 'nodes', "node_name like \'%#{@filter}%\'")
+    @nodes = @select['output'].split(/\n/)
   end
 end

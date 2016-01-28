@@ -20,4 +20,40 @@ class ApplicationController < ActionController::Base
       redirect_to login_path
     end
   end
+
+  # Launch a given command on the tsm server
+  # Returns an Hash containing:
+  # exit_status => the exit status of the command
+  # output => the output
+  def tsm_exec(cmd)
+    tsm_exec = Hash.new
+    if Setting.local_tsm
+      tsm_exec['output'] = `#{cmd}`
+      tsm_exec['exit_status'] = $?
+    else
+      tsm_exec['output'] = `ssh -p #{Setting.ssh_port} #{Setting.ssh_user}@#{Setting.tsm_address} "#{cmd}"`
+      tsm_exec['exit_status'] = $?
+    end
+    tsm_exec
+  end
+
+  # Launch a given command directly to TSM server using qtsm (provided by eztsm-plugins)
+  # Returns an Hash containing:
+  # exit_status => the exit status of the command
+  # output => the output
+  def qtsm(cmd)
+    tsm_exec('qtsm ' + cmd)
+  end
+
+  # Execute a select query on TSM database
+  def tsmdb_select(columns, table, where_clauses)
+    select_statement = 'qtsmc \\"select ' + columns.join(', ') + " from #{table}"
+    if where_clauses.nil?
+      select_statement += '\\"'
+    else
+      select_statement += ' where ' + where_clauses + '\\"'
+    end
+    tsm_exec select_statement
+  end
+
 end

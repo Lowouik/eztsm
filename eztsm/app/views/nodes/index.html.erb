@@ -1,0 +1,21 @@
+<div class="jumbotron">
+  <h1> Search Nodes</h1>
+  <p>You searched for: '<%= @filter %>'</p>
+</div>
+
+<%#= render :partial => 'admin/users/edit_user_modal', :locals => { :user => @user }  %>
+<table class="table table-striped">
+  <tr>
+    <% @columns.each do |column| -%>
+      <th><%= column %></th>
+    <% end -%>
+  </tr>
+ 
+  <% @nodes.each do |node| -%>
+    <tr>
+      <% node.split(',').each do |node_field| -%>
+        <td><%= node_field %></td>
+      <% end -%>
+    </tr>
+  <% end -%>
+</table>
