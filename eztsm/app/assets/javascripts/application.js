@@ -17,7 +17,19 @@
 //= require rails.validations
 //= require_tree .
 
+/*function getNodeNameFromTable(row){
+  var nodeName = $('td:first', $(row).parents('tr')).text();
+  $('#viewNodeModalHeader').html(nodeName)
+  $('#viewNodeModal').modal({
+    show: true
+  });
+}*/
+
 $(document).on("ready page:change", function() {
-	  $('.has-tooltip').tooltip();
+  // Activate bootstrap tooltips
+  $('.has-tooltip').tooltip();
 });
 
+
+
+ 

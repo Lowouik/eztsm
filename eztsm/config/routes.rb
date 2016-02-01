@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   post 'sessions' => 'sessions#create'
 
   resources 'nodes'
+  get 'node' => 'nodes#view'
 
   namespace :admin do
     get 'settings' => 'settings#index'

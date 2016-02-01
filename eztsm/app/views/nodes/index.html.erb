@@ -3,6 +3,25 @@
   <p>You searched for: '<%= @filter %>'</p>
 </div>
 
+<div class="modal fade" tabindex="-1" role="dialog" id="viewNodeModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h2><span id="viewNodeModalHeader"></span></h1>
+      </div>
+      <div class="modal-body">
+        <span id="viewNodeModalBodyErrors"></span>
+        <span id="viewNodeModalBodyMain"></span>
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div id='test'></div>
+
 <%#= render :partial => 'admin/users/edit_user_modal', :locals => { :user => @user }  %>
 <table class="table table-striped">
   <tr>
@@ -16,13 +35,15 @@
           <% end -%>
            </th>
     <% end -%>
+    <th width='3%'></th>
   </tr>
  
   <% @nodes.each do |node| -%>
-    <tr>
+    <tr class="rowDblClick">
       <% node.split(',').each do |node_field| -%>
         <td><%= node_field %></td>
       <% end -%>
+      <td><button type="button" class='btn btn-xs btn-primary has-tooltip' title='View or update node' onclick='getNodeNameFromTable(this)'><span class='glyphicon glyphicon-search'></span></button>
     </tr>
   <% end -%>
 </table>
