@@ -29,10 +29,10 @@ class ApplicationController < ActionController::Base
     tsm_exec = Hash.new
     if Setting.local_tsm
       tsm_exec['output'] = `#{cmd}`
-      tsm_exec['exit_status'] = $?
+      tsm_exec['exit_status'] = $?.exitstatus
     else
       tsm_exec['output'] = `ssh -p #{Setting.ssh_port} #{Setting.ssh_user}@#{Setting.tsm_address} "#{cmd}"`
-      tsm_exec['exit_status'] = $?
+      tsm_exec['exit_status'] = $?.exitstatus
     end
     tsm_exec
   end

@@ -14,6 +14,7 @@ Rails.application.routes.draw do
 
   resources 'nodes'
   get 'node' => 'nodes#view'
+  post 'node/rename' => 'nodes#rename'
 
   namespace :admin do
     get 'settings' => 'settings#index'

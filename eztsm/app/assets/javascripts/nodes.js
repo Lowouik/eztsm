@@ -34,7 +34,7 @@ function getNodeNameFromTable(row){
       }
       // Customize some fields that can be modified through ajax requests
       // Let's start with the node name
-      renameNodeButton = ' <button type="button" class="btn btn-xs btn-default has-tooltip" title="Rename" onclick="renameNode(\'' + node[0]['node_name'] + '\')"><span class="glyphicon glyphicon-option-horizontal"></span></button>'
+      renameNodeButton = ' <button type="button" id="viewNodeModalBodyMain-node_name-renameNodeButton" class="btn btn-xs btn-default has-tooltip" title="Rename" onclick="prepareNodeRenaming(\'' + node[0]['node_name'] + '\')"><span class="glyphicon glyphicon-option-horizontal"></span></button>'
       $('#viewNodeModalBodyMain-node_name').append(renameNodeButton) 
 
     },
@@ -47,11 +47,35 @@ function getNodeNameFromTable(row){
   });
 }
 
-function renameNode(currentNode){
-  $('#viewNodeModalBodyMain-node_name').html('<input id="viewNodeModalBodyMain-node_name-inputField" class="string required" style="width:' + (currentNode.length + 1) * 9 + 'px" type="text" value="' + currentNode + '"/>' + renameNodeButton + ' <button class="btn btn-xs btn-success has-tooltip" title="OK" onclick="#"><span class="glyphicon glyphicon-ok-circle"></span></button> <button class="btn btn-xs btn-danger has-tooltip" title="Cancel" onclick="cancelNodeRenaming(\'' + currentNode + '\')"><span class="glyphicon glyphicon-remove-circle"></span></button>')
+function prepareNodeRenaming(currentNode){
+  var renameNodeInputWidth = (currentNode.length + 1) * 9
+  if (renameNodeInputWidth > 290 ) {
+    renameNodeInputWidth = 290
+  }
+  $('#viewNodeModalBodyMain-node_name').html('<input id="viewNodeModalBodyMain-node_name-inputField" class="string required" style="width:' + renameNodeInputWidth + 'px" type="text" value="' + currentNode + '"/>' + renameNodeButton + ' <button class="btn btn-xs btn-success has-tooltip" title="OK" onclick="renameNode(' + currentNode + ',' + viewNodeModalBodyMain-node_name-inputField.value + ')"><span class="glyphicon glyphicon-ok"></span></button> <button class="btn btn-xs btn-danger has-tooltip" title="Cancel" onclick="cancelNodeRenaming(\'' + currentNode + '\')"><span class="glyphicon glyphicon-remove"></span></button>')
+  $('#viewNodeModalBodyMain-node_name-renameNodeButton').hide()
 }
 
 function cancelNodeRenaming(node){
   $('#viewNodeModalBodyMain-node_name').html(node + renameNodeButton)
   $('#viewNodeModalBodyErrors').html('')
+}
+
+function renameNode(current_name, new_name) {
+  var postData = {
+    current_name: current_name,
+    new_name: new_name
+  };
+
+  $.ajax({
+    type: "POST",
+    dataType: "json",
+    url: '/node/rename',
+    data: result,
+    success: function(result){
+    },
+    error: function() {
+    },
+    data: postData
+  });
 }
