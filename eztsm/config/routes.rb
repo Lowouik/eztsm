@@ -14,9 +14,11 @@ Rails.application.routes.draw do
 
   get 'nodes' => 'nodes#index'
   get 'domains' => 'domains#index'
+  get 'optsets' => 'optsets#index'
 
   get 'node' => 'nodes#view'
   post 'node/rename' => 'nodes#rename'
+  post 'node/update' => 'nodes#update'
 
   namespace :admin do
     get 'settings' => 'settings#index'

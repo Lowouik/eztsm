@@ -37,6 +37,8 @@ function getNodeNameFromTable(row){
       $('#viewNodeModalBodyMain-node_name').append(' <button type="button" id="viewNodeModalBodyMain-node_name-renameNodeButton" class="btn btn-xs btn-default has-tooltip" title="Rename" onclick="prepareNodeRenaming(\'' + node[0]['node_name'] + '\')"><span class="glyphicon glyphicon-option-horizontal"></span></button>') 
       // domain name
       $('#viewNodeModalBodyMain-domain_name').append(' <button type="button" id="viewNodeModalBodyMain-domain_name-changeDomainButton" class="btn btn-xs btn-default has-tooltip" title="Change domain" onclick="prepareDomainChanging(\'' + node[0]['node_name'] + '\', \'' + node[0]['domain_name'] + '\')"><span class="glyphicon glyphicon-option-horizontal"></span></button><span id="viewNodeModalBodyMain-domain_name-changeDomainLoadingIcon" class="glyphicon glyphicon-refresh glyphicon-refresh-animate" style="display:none"></span>')
+      // option_set
+      $('#viewNodeModalBodyMain-option_set').append(' <button type="button" id="viewNodeModalBodyMain-option_set-changeOptionSetButton" class="btn btn-xs btn-default has-tooltip" title="Change Option Set" onclick="prepareOptionSetChanging(\'' + node[0]['node_name'] + '\', \'' + node[0]['option_set'] + '\')"><span class="glyphicon glyphicon-option-horizontal"></span></button><span id="viewNodeModalBodyMain-option_set-changeOptionSetLoadingIcon" class="glyphicon glyphicon-refresh glyphicon-refresh-animate" style="display:none"></span>')
     },
     error: function(){
       genericError()
@@ -58,7 +60,6 @@ function prepareNodeRenaming(currentNode){
 function prepareDomainChanging(nodeName, currentDomain){
 // get Domain List
   var result
-  domain_list = ''
   $("#viewNodeModalBodyMain-domain_name-changeDomainButton").hide()
   $("#viewNodeModalBodyMain-domain_name-changeDomainLoadingIcon").show()
 
@@ -69,7 +70,7 @@ function prepareDomainChanging(nodeName, currentDomain){
     data: result,
     success: function(result){
       if ( result.exit_status != 0 ){
-        $('#viewNodeModalBodyErrors').html('<span class="text-danger">An error occured while renaming node. Error details:<br />' + result['output'] + '</span>')
+        $('#viewNodeModalBodyErrors').html('<span class="text-danger">An error occured while getting domains list. Error details:<br />' + result['output'] + '</span>')
       } else {
         domainsListBox = '<select id="viewNodeModalBodyMain-domain_name-changeDomainSelectBox"> <option> ' + currentDomain + ' </option>'
         result.domains.forEach(function(entry) {
@@ -77,7 +78,7 @@ function prepareDomainChanging(nodeName, currentDomain){
             domainsListBox += ' <option> ' + entry.domain_name + '</option>'
           }
         }) 
-        domainsListBox += '</select><span id="viewNodeModalBodyMain-domain_name-changeDomainLoadingIcon" class="glyphicon glyphicon-refresh glyphicon-refresh-animate"style="display:none"></span><span id="viewNodeModalBodyMain-domain_name-changeDomainOKnCancelButtons"> <button class="btn btn-xs btn-success has-tooltip" title="OK" onclick="changeDomain(\'' + nodeName + ', ' + currentDomain + '\')"><span class="glyphicon glyphicon-ok"></span></button> <button class="btn btn-xs btn-danger has-tooltip" title="Cancel" onclick="cancelDomainChanging(\'' + nodeName + '\', \'' + currentDomain + '\')"><span class="glyphicon glyphicon-remove"></span></button></span>'
+        domainsListBox += '</select><span id="viewNodeModalBodyMain-domain_name-changeDomainLoadingIcon" class="glyphicon glyphicon-refresh glyphicon-refresh-animate"style="display:none"></span><span id="viewNodeModalBodyMain-domain_name-changeDomainOKnCancelButtons"> <button class="btn btn-xs btn-success has-tooltip" title="OK" onclick="changeDomain(\'' + nodeName + '\')"><span class="glyphicon glyphicon-ok"></span></button> <button class="btn btn-xs btn-danger has-tooltip" title="Cancel" onclick="cancelDomainChanging(\'' + nodeName + '\', \'' + currentDomain + '\')"><span class="glyphicon glyphicon-remove"></span></button></span>'
         $('#viewNodeModalBodyMain-domain_name').html(domainsListBox)
       }
     },
@@ -91,16 +92,54 @@ function prepareDomainChanging(nodeName, currentDomain){
 
 }
 
+function prepareOptionSetChanging(nodeName, currentOptionSet){
+// get Option Sets List
+  var result
+  $("#viewNodeModalBodyMain-option_set-changeOptionSetButton").hide()
+  $("#viewNodeModalBodyMain-option_set-changeOptionSetLoadingIcon").show()
+
+  $.ajax({
+    type: "GET",
+    dataType: "json",
+    url: '/optsets',
+    data: result,
+    success: function(result){
+      if ( result.exit_status != 0 ){
+        $('#viewNodeModalBodyErrors').html('<span class="text-danger">An error occured while getting option sets list. Error details:<br />' + result['output'] + '</span>')
+      } else {
+        optionSetsListBox = '<select id="viewNodeModalBodyMain-option_set-changeOptionSetSelectBox"> <option> ' + currentOptionSet + ' </option>'
+        result.optsets.forEach(function(entry) {
+          if ( entry.option_set != currentOptionSet ) {
+            optionSetsListBox += ' <option> ' + entry.optionset_name + '</option>'
+          }
+        }) 
+        optionSetsListBox += '</select><span id="viewNodeModalBodyMain-option_set-changeOptionSetLoadingIcon" class="glyphicon glyphicon-refresh glyphicon-refresh-animate"style="display:none"></span><span id="viewNodeModalBodyMain-option_set-changeOptionSetOKnCancelButtons"> <button class="btn btn-xs btn-success has-tooltip" title="OK" onclick="changeOptionSet(\'' + nodeName + '\')"><span class="glyphicon glyphicon-ok"></span></button> <button class="btn btn-xs btn-danger has-tooltip" title="Cancel" onclick="cancelOptionSetChanging(\'' + nodeName + '\', \'' + currentOptionSet + '\')"><span class="glyphicon glyphicon-remove"></span></button></span>'
+        $('#viewNodeModalBodyMain-option_set').html(optionSetsListBox)
+      }
+    },
+    error: function(){
+      genericError()
+    },
+    complete: function(){
+      $("#viewNodeModalBodyMain-option_set-changeOptionSetLoadingIcon").hide()
+    }
+  });
+}
+
 function cancelNodeRenaming(node){
   $('#viewNodeModalBodyMain-node_name').html(node + ' <button type="button" id="viewNodeModalBodyMain-node_name-renameNodeButton" class="btn btn-xs btn-default has-tooltip" title="Rename" onclick="prepareNodeRenaming(\'' + node + '\')"><span class="glyphicon glyphicon-option-horizontal"></span></button>')
   $('#viewNodeModalBodyErrors').html('')
 }
 
 function cancelDomainChanging(node, domain){
-  $('#viewNodeModalBodyMain-domain_name').html(domain + ' <button type="button" id="viewNodeModalBodyMain-domain_name-changeDomainButton" class="btn btn-xs btn-default has-tooltip" title="Change domain" onclick="prepareDomainChanging(\'' + node + '\', \'' + domain + '\')"><span class="glyphicon glyphicon-option-horizontal"></span></button><span id="viewNodeModalBodyMain-domain_name-changeDomainLoadingIcon" class="glyphicon glyphicon-refresh glyphicon-refresh-animate" style="display:none"></span>')
+  $('#viewNodeModalBodyMain-domain_name').html(domain + ' <button type="button" id="viewNodeModalBodyMain-domain_name-changeDomainButton" class="btn btn-xs btn-default has-tooltip" title="Change Domain" onclick="prepareDomainChanging(\'' + node + '\', \'' + domain + '\')"><span class="glyphicon glyphicon-option-horizontal"></span></button><span id="viewNodeModalBodyMain-domain_name-changeDomainLoadingIcon" class="glyphicon glyphicon-refresh glyphicon-refresh-animate" style="display:none"></span>')
   $('#viewNodeModalBodyErrors').html('')
 }
 
+function cancelOptionSetChanging(node, optset){
+  $('#viewNodeModalBodyMain-option_set').html(optset + ' <button type="button" id="viewNodeModalBodyMain-option_set-changeOptionSetButton" class="btn btn-xs btn-default has-tooltip" title="Change Option Set" onclick="prepareOptionSetChanging(\'' + node + '\', \'' + optset + '\')"><span class="glyphicon glyphicon-option-horizontal"></span></button><span id="viewNodeModalBodyMain-option_set-changeOptionSetLoadingIcon" class="glyphicon glyphicon-refresh glyphicon-refresh-animate" style="display:none"></span>')
+  $('#viewNodeModalBodyErrors').html('')
+}
 
 function renameNode(currentName) {
   var result
@@ -141,14 +180,12 @@ function renameNode(currentName) {
   });
 }
 
-function changeDomain(nodeName, currentDomain){
+function changeDomain(nodeName){
   var result
   newDomain = $("#viewNodeModalBodyMain-domain_name-changeDomainSelectBox option:selected").text()
-
   var postData = {
     node_name: nodeName,
-    current_domain: currentDomain,
-    new_domain: newDomain
+    domain: newDomain
   };
 
   $("#viewNodeModalBodyMain-domain_name-changeDomainOKnCancelButtons").hide()
@@ -164,7 +201,7 @@ function changeDomain(nodeName, currentDomain){
         $('#viewNodeModalBodyErrors').html('<span class="text-danger">An error occured while updating node\'s domain. Error details:<br />' + result['output'] + '</span>')
       } else {
       $('#viewNodeModalBodyErrors').html('')
-      canceldomainChanging(newDomain)
+      cancelDomainChanging(nodeName, newDomain)
       }
     },
     error: function(){
@@ -173,6 +210,41 @@ function changeDomain(nodeName, currentDomain){
     complete: function(){
       $("#viewNodeModalBodyMain-domain_name-changeDomainLoadingIcon").hide()
       $("#viewNodeModalBodyMain-domain_name-changeDomainOKnCancelButtons").show()
+    },
+    data: postData
+  });
+}
+
+function changeOptionSet(nodeName){
+  var result
+  newOptionSet = $("#viewNodeModalBodyMain-option_set-changeOptionSetSelectBox option:selected").text()
+  var postData = {
+    node_name: nodeName,
+    option_set: newOptionSet
+  };
+
+  $("#viewNodeModalBodyMain-option_set-changeOptionSetOKnCancelButtons").hide()
+  $("#viewNodeModalBodyMain-option_set-changeOptionSetLoadingIcon").show()
+
+  $.ajax({
+    type: "POST",
+    dataType: "json",
+    url: '/node/update',
+    data: result,
+    success: function(result){
+      if ( result.exit_status != 0 ){
+        $('#viewNodeModalBodyErrors').html('<span class="text-danger">An error occured while updating node\'s option set. Error details:<br />' + result['output'] + '</span>')
+      } else {
+      $('#viewNodeModalBodyErrors').html('')
+      cancelOptionSetChanging(nodeName, newOptionSet)
+      }
+    },
+    error: function(){
+      genericError()
+    },
+    complete: function(){
+      $("#viewNodeModalBodyMain-option_set-changeOptionSetLoadingIcon").hide()
+      $("#viewNodeModalBodyMain-option_set-changeOptionSetOKnCancelButtons").show()
     },
     data: postData
   });

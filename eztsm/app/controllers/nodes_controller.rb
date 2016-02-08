@@ -9,7 +9,7 @@ class NodesController < ApplicationController
   end
 
   def view
-    node_name = params[:node_name] 
+    node_name = sanitize_for_tsm(params[:node_name])
     columns = ['NODE_NAME','DOMAIN_NAME','OPTION_SET','PLATFORM_NAME','TCP_NAME','TCP_ADDRESS','MAX_MP_ALLOWED','ARCHDELETE','BACKDELETE','LOCKED','LASTACC_TIME','LASTSESS_COMMMETH','LASTSESS_RECVD','LASTSESS_SENT','LASTSESS_DURATION','LASTSESS_IDLEWAIT','LASTSESS_COMMWAIT','LASTSESS_MEDIAWAIT']
     select = tsmdb_select(columns, 'nodes', "node_name = '#{node_name}'")
     
@@ -23,11 +23,32 @@ class NodesController < ApplicationController
 
   def rename
     result = qtsm("rename node #{sanitize_for_tsm(params[:current_name])} #{sanitize_for_tsm(params[:new_name]).upcase}")
-    puts result
-    puts result.to_json
     respond_to do |format|
       format.json { render :json => result.to_json } 
     end
   end
 
+  def update
+    node_name = sanitize_for_tsm(params[:node_name])
+    puts node_name
+    puts params[:domain]
+    result = Hash.new
+    result['output'] = 'No matching parameters' #Error message if no available parameters where given
+ 
+    #Update domain
+    if params[:domain]
+      domain = sanitize_for_tsm(params[:domain])
+      result = qtsm("update node #{node_name} domain=#{domain}")
+    end
+
+    #Update option set
+    if params[:option_set]
+      option_set = sanitize_for_tsm(params[:option_set])
+      result = qtsm("update node #{node_name} cloptset=#{option_set}")
+    end
+
+    respond_to do |format|
+      format.json { render :json => result.to_json }
+    end
+  end
 end
