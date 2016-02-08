@@ -2,7 +2,7 @@ class NodesController < ApplicationController
 
   def index
     @node_name = params[:node_name]
-    @filter = @node_name.upcase.gsub(/\*/i, '%').gsub(/[^0-9A-Z\-\._%]/i, '')
+    @filter = sanitize_for_tsm(@node_name).upcase
     @columns = [ 'node_name', 'platform_name', 'domain_name', 'option_set', 'timestamp(lastacc_time, 0)']
     @select = tsmdb_select(@columns, 'nodes', "node_name like \'%#{@filter}%\'")
     @nodes = @select['output'].split(/\n/)
@@ -15,10 +15,19 @@ class NodesController < ApplicationController
     
     result_csv = CSV.new(columns.join(',') + "\n" + select['output'], :headers => true, :header_converters => :symbol, :converters => :all)
     result_json = result_csv.to_a.map {|row| row.to_hash }
-    puts result_json
 
     respond_to do |format|
       format.json { render :json => result_json }
     end
   end
+
+  def rename
+    result = qtsm("rename node #{sanitize_for_tsm(params[:current_name])} #{sanitize_for_tsm(params[:new_name]).upcase}")
+    puts result
+    puts result.to_json
+    respond_to do |format|
+      format.json { render :json => result.to_json } 
+    end
+  end
+
 end

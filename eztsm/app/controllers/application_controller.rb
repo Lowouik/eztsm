@@ -42,11 +42,11 @@ class ApplicationController < ActionController::Base
   # exit_status => the exit status of the command
   # output => the output
   def qtsm(cmd)
-    tsm_exec('qtsm ' + cmd)
+    tsm_exec('qtsm \\" ' + cmd + '\\"')
   end
 
   # Execute a select query on TSM database
-  def tsmdb_select(columns, table, where_clauses)
+  def tsmdb_select(columns, table, where_clauses = nil)
     select_statement = 'qtsmc \\"select ' + columns.join(', ') + " from #{table}"
     if where_clauses.nil?
       select_statement += '\\"'
@@ -54,6 +54,11 @@ class ApplicationController < ActionController::Base
       select_statement += ' where ' + where_clauses + '\\"'
     end
     tsm_exec select_statement
+  end
+
+  # Sanitize a string provided by user before it can be given to TSM
+  def sanitize_for_tsm(input_string)
+    input_string.gsub(/\*/i, '%').gsub(/[^0-9A-Za-z\-\._%]/i, '')
   end
 
 end

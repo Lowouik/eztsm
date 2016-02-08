@@ -28,8 +28,12 @@
 $(document).on("ready page:change", function() {
   // Activate bootstrap tooltips
   $('.has-tooltip').tooltip();
-});
 
+  // Reload node index when edit node modal is closed
+  $("#viewNodeModal").on('hidden.bs.modal', function () {
+    document.location.reload();
+  })
+});
 
 
  

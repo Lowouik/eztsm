@@ -12,7 +12,9 @@ Rails.application.routes.draw do
   get 'sessions/new'
   post 'sessions' => 'sessions#create'
 
-  resources 'nodes'
+  get 'nodes' => 'nodes#index'
+  get 'domains' => 'domains#index'
+
   get 'node' => 'nodes#view'
   post 'node/rename' => 'nodes#rename'
 
