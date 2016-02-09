@@ -47,6 +47,12 @@ class NodesController < ApplicationController
       result = qtsm("update node #{node_name} cloptset=#{option_set}")
     end
 
+    #Update max mp allowed
+    if params[:max_mp_allowed]
+      max_mp_allowed = sanitize_for_tsm(params[:max_mp_allowed])
+      result = qtsm("update node #{node_name} maxnummp=#{max_mp_allowed}")
+    end
+
     respond_to do |format|
       format.json { render :json => result.to_json }
     end

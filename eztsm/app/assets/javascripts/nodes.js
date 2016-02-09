@@ -36,9 +36,11 @@ function getNodeNameFromTable(row){
       // Let's start with the node name
       $('#viewNodeModalBodyMain-node_name').append(' <button type="button" id="viewNodeModalBodyMain-node_name-renameNodeButton" class="btn btn-xs btn-default has-tooltip" title="Rename" onclick="prepareNodeRenaming(\'' + node[0]['node_name'] + '\')"><span class="glyphicon glyphicon-option-horizontal"></span></button>') 
       // domain name
-      $('#viewNodeModalBodyMain-domain_name').append(' <button type="button" id="viewNodeModalBodyMain-domain_name-changeDomainButton" class="btn btn-xs btn-default has-tooltip" title="Change domain" onclick="prepareDomainChanging(\'' + node[0]['node_name'] + '\', \'' + node[0]['domain_name'] + '\')"><span class="glyphicon glyphicon-option-horizontal"></span></button><span id="viewNodeModalBodyMain-domain_name-changeDomainLoadingIcon" class="glyphicon glyphicon-refresh glyphicon-refresh-animate" style="display:none"></span>')
+      $('#viewNodeModalBodyMain-domain_name').append(' <button type="button" id="viewNodeModalBodyMain-domain_name-changeDomainButton" class="btn btn-xs btn-default has-tooltip" title="Change domain" onclick="prepareDomainChanging(\'' + node[0]['domain_name'] + '\')"><span class="glyphicon glyphicon-option-horizontal"></span></button><span id="viewNodeModalBodyMain-domain_name-changeDomainLoadingIcon" class="glyphicon glyphicon-refresh glyphicon-refresh-animate" style="display:none"></span>')
       // option_set
-      $('#viewNodeModalBodyMain-option_set').append(' <button type="button" id="viewNodeModalBodyMain-option_set-changeOptionSetButton" class="btn btn-xs btn-default has-tooltip" title="Change Option Set" onclick="prepareOptionSetChanging(\'' + node[0]['node_name'] + '\', \'' + node[0]['option_set'] + '\')"><span class="glyphicon glyphicon-option-horizontal"></span></button><span id="viewNodeModalBodyMain-option_set-changeOptionSetLoadingIcon" class="glyphicon glyphicon-refresh glyphicon-refresh-animate" style="display:none"></span>')
+      $('#viewNodeModalBodyMain-option_set').append(' <button type="button" id="viewNodeModalBodyMain-option_set-changeOptionSetButton" class="btn btn-xs btn-default has-tooltip" title="Change Option Set" onclick="prepareOptionSetChanging(\'' + node[0]['option_set'] + '\')"><span class="glyphicon glyphicon-option-horizontal"></span></button><span id="viewNodeModalBodyMain-option_set-changeOptionSetLoadingIcon" class="glyphicon glyphicon-refresh glyphicon-refresh-animate" style="display:none"></span>')
+      // max_mp_allowed
+      $('#viewNodeModalBodyMain-max_mp_allowed').html('<input id="viewNodeModalBodyMain-max_mp_allowed-inputField" class="input-default" type="number" style="width: 40px" onchange="handleMaxMpAllowedChange()" min="1" max="4" value="' + $('#viewNodeModalBodyMain-max_mp_allowed').text() + '" /><span id="viewNodeModalBodyMain-max_mp_allowed-changeMaxMpAllowedLoadingIcon" class="glyphicon glyphicon-refresh glyphicon-refresh-animate" style="display:none"></span><span id="viewNodeModalBodyMain-max_mp_allowed-changeMaxMpAllowedOKnCancelButtons" style="display: none"> <button class="btn btn-xs btn-success has-tooltip" title="OK" onclick="updateMaxMpAllowed()"><span class="glyphicon glyphicon-ok"></span></button> <button class="btn btn-xs btn-danger has-tooltip" title="Cancel" onclick="cancelMaxMpAllowedUpdating(\'' + node[0]['max_mp_allowed'] + '\')"><span class="glyphicon glyphicon-remove"></span></button></span>')
     },
     error: function(){
       genericError()
@@ -57,8 +59,9 @@ function prepareNodeRenaming(currentNode){
   $('#viewNodeModalBodyMain-node_name').html('<input id="viewNodeModalBodyMain-node_name-inputField" class="string required" style="width:' + renameNodeInputWidth + 'px" type="text" value="' + currentNode + '"/> <span id="viewNodeModalBodyMain-node_name-renameNodeLoadingIcon" class="glyphicon glyphicon-refresh glyphicon-refresh-animate" style="display:none"></span><span id="viewNodeModalBodyMain-node_name-renameNodeOKnCancelButtons"> <button class="btn btn-xs btn-success has-tooltip" title="OK" onclick="renameNode(\'' + currentNode + '\')"><span class="glyphicon glyphicon-ok"></span></button> <button class="btn btn-xs btn-danger has-tooltip" title="Cancel" onclick="cancelNodeRenaming(\'' + currentNode + '\')"><span class="glyphicon glyphicon-remove"></span></button></span>')
 }
 
-function prepareDomainChanging(nodeName, currentDomain){
-// get Domain List
+function prepareDomainChanging(currentDomain){
+  // get Domain List
+  nodeName = $('#viewNodeModalHeader').text()
   var result
   $("#viewNodeModalBodyMain-domain_name-changeDomainButton").hide()
   $("#viewNodeModalBodyMain-domain_name-changeDomainLoadingIcon").show()
@@ -92,8 +95,9 @@ function prepareDomainChanging(nodeName, currentDomain){
 
 }
 
-function prepareOptionSetChanging(nodeName, currentOptionSet){
-// get Option Sets List
+function prepareOptionSetChanging(currentOptionSet){
+  // get Option Sets List
+  nodeName = $('#viewNodeModalHeader').text()
   var result
   $("#viewNodeModalBodyMain-option_set-changeOptionSetButton").hide()
   $("#viewNodeModalBodyMain-option_set-changeOptionSetLoadingIcon").show()
@@ -141,6 +145,10 @@ function cancelOptionSetChanging(node, optset){
   $('#viewNodeModalBodyErrors').html('')
 }
 
+function cancelMaxMpAllowedUpdating(maxMpAllowed) {
+  $("#viewNodeModalBodyMain-max_mp_allowed-changeMaxMpAllowedOKnCancelButtons").hide()
+  $("#viewNodeModalBodyMain-max_mp_allowed-inputField").val(maxMpAllowed)  
+}
 function renameNode(currentName) {
   var result
   // sanitize input
@@ -198,7 +206,7 @@ function changeDomain(nodeName){
     data: result,
     success: function(result){
       if ( result.exit_status != 0 ){
-        $('#viewNodeModalBodyErrors').html('<span class="text-danger">An error occured while updating node\'s domain. Error details:<br />' + result['output'] + '</span>')
+        updateError(result['output'])
       } else {
       $('#viewNodeModalBodyErrors').html('')
       cancelDomainChanging(nodeName, newDomain)
@@ -233,7 +241,7 @@ function changeOptionSet(nodeName){
     data: result,
     success: function(result){
       if ( result.exit_status != 0 ){
-        $('#viewNodeModalBodyErrors').html('<span class="text-danger">An error occured while updating node\'s option set. Error details:<br />' + result['output'] + '</span>')
+        updateError(result['output'])
       } else {
       $('#viewNodeModalBodyErrors').html('')
       cancelOptionSetChanging(nodeName, newOptionSet)
@@ -250,6 +258,48 @@ function changeOptionSet(nodeName){
   });
 }
 
+function updateMaxMpAllowed(){
+  nodeName = $('#viewNodeModalHeader').text()
+  var result
+  newMaxMpAllowed = $("#viewNodeModalBodyMain-max_mp_allowed-inputField").val()
+  var postData = {
+    node_name: nodeName,
+    max_mp_allowed: newMaxMpAllowed
+  };
+
+  $("#viewNodeModalBodyMain-max_mp_allowed-changeMaxMpAllowedOKnCancelButtons").hide()
+  $("#viewNodeModalBodyMain-max_mp_allowed-changeMaxMpAllowedLoadingIcon").show()
+
+  $.ajax({
+    type: "POST",
+    dataType: "json",
+    url: '/node/update',
+    data: result,
+    success: function(result){
+      if ( result.exit_status != 0 ){
+        updateError(result['output'])
+      } else {
+      $('#viewNodeModalBodyErrors').html('')
+      cancelMaxMpAllowedUpdating(newMaxMpAllowed)
+      }
+    },
+    error: function(){
+      genericError()
+    },
+    complete: function(){
+      $("#viewNodeModalBodyMain-max_mp_allowed-changeMaxMpAllowedLoadingIcon").hide()
+    },
+    data: postData
+  });
+}
+
+function handleMaxMpAllowedChange(){
+  $("#viewNodeModalBodyMain-max_mp_allowed-changeMaxMpAllowedOKnCancelButtons").show()
+}
+
+function updateError(errorDetails){
+  $('#viewNodeModalBodyErrors').html('<span class="text-danger">An error occured while updating node\'s property. Error details:<br />' + errorDetails + '</span>')
+}
 function genericError(){
   $('#viewNodeModalBodyErrors').html('<span class="text-danger">An error occured while trying to retrieve node informations. Please try again later or contact your ezTSM administrator.</span>')
 }
