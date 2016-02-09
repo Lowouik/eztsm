@@ -19,6 +19,7 @@ Rails.application.routes.draw do
   get 'node' => 'nodes#view'
   post 'node/rename' => 'nodes#rename'
   post 'node/update' => 'nodes#update'
+  delete 'node' => 'nodes#delete'
 
   namespace :admin do
     get 'settings' => 'settings#index'

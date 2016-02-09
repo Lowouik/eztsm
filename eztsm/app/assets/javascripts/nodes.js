@@ -1,8 +1,10 @@
 function getNodeNameFromTable(row){
+
   // Variable declarations and retrieve node name from the first td of the row
   var nodeName = $('td:first', $(row).parents('tr')).text();
   var node = ''
-    //
+  var backdeleteSwitchValue = ''
+
   // Empty fields
   $('#viewNodeModalBodyErrors').html('')
   $('#viewNodeModalBodyMain').html('')
@@ -41,6 +43,12 @@ function getNodeNameFromTable(row){
       $('#viewNodeModalBodyMain-option_set').append(' <button type="button" id="viewNodeModalBodyMain-option_set-changeOptionSetButton" class="btn btn-xs btn-default has-tooltip" title="Change Option Set" onclick="prepareOptionSetChanging(\'' + node[0]['option_set'] + '\')"><span class="glyphicon glyphicon-option-horizontal"></span></button><span id="viewNodeModalBodyMain-option_set-changeOptionSetLoadingIcon" class="glyphicon glyphicon-refresh glyphicon-refresh-animate" style="display:none"></span>')
       // max_mp_allowed
       $('#viewNodeModalBodyMain-max_mp_allowed').html('<input id="viewNodeModalBodyMain-max_mp_allowed-inputField" class="input-default" type="number" style="width: 40px" onchange="handleMaxMpAllowedChange()" min="1" max="4" value="' + $('#viewNodeModalBodyMain-max_mp_allowed').text() + '" /><span id="viewNodeModalBodyMain-max_mp_allowed-changeMaxMpAllowedLoadingIcon" class="glyphicon glyphicon-refresh glyphicon-refresh-animate" style="display:none"></span><span id="viewNodeModalBodyMain-max_mp_allowed-changeMaxMpAllowedOKnCancelButtons" style="display: none"> <button class="btn btn-xs btn-success has-tooltip" title="OK" onclick="updateMaxMpAllowed()"><span class="glyphicon glyphicon-ok"></span></button> <button class="btn btn-xs btn-danger has-tooltip" title="Cancel" onclick="cancelMaxMpAllowedUpdating(\'' + node[0]['max_mp_allowed'] + '\')"><span class="glyphicon glyphicon-remove"></span></button></span>')
+      // backdelete button
+      if ( $('#viewNodeModalBodyMain-backdelete').text() == 'YES' ){
+        backdeleteSwitchValue = 'checked'
+      } 
+      $('#viewNodeModalBodyMain-backdelete').html('<input id="viewNodeModalBodyMain-backdelete-switch" type="checkbox" ' + backdeleteSwitchValue + ' data-toggle="toggle" data-on="YES" data-off="NO" data-size="mini" onchange=updateBackDelete()><span id="viewNodeModalBodyMain-backdelete-updateBackDeleteLoadingIcon" class="glyphicon glyphicon-refresh glyphicon-refresh-animate" style="display:none"></span>')
+      $('#viewNodeModalBodyMain-backdelete-switch').bootstrapToggle()
     },
     error: function(){
       genericError()
@@ -288,6 +296,41 @@ function updateMaxMpAllowed(){
     },
     complete: function(){
       $("#viewNodeModalBodyMain-max_mp_allowed-changeMaxMpAllowedLoadingIcon").hide()
+    },
+    data: postData
+  });
+}
+
+function updateBackDelete(){
+  nodeName = $('#viewNodeModalHeader').text()
+  var result
+  backdelete = $("#viewNodeModalBodyMain-backdelete-switch").prop('checked')
+  var postData = {
+    node_name: nodeName,
+    backdelete: backdelete
+  };
+
+  $("#viewNodeModalBodyMain-backdelete-switch").bootstrapToggle('disable')
+  $("#viewNodeModalBodyMain-backdelete-updateBackdeleteLoadingIcon").show()
+
+  $.ajax({
+    type: "POST",
+    dataType: "json",
+    url: '/node/update',
+    data: result,
+    success: function(result){
+      if ( result.exit_status != 0 ){
+        updateError(result['output'])
+      } else {
+      $('#viewNodeModalBodyErrors').html('')
+      }
+    },
+    error: function(){
+      genericError()
+    },
+    complete: function(){
+      $("#viewNodeModalBodyMain-backdelete-updateBackDeleteLoadingIcon").hide()
+      $("#viewNodeModalBodyMain-backdelete-switch").bootstrapToggle('enable')
     },
     data: postData
   });

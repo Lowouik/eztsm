@@ -1,7 +1,11 @@
 class NodesController < ApplicationController
 
   def index
-    @node_name = params[:node_name]
+    if params[:node_name]
+      @node_name = params[:node_name]
+    else
+      @node_name = ''
+    end
     @filter = sanitize_for_tsm(@node_name).upcase
     @columns = [ 'node_name', 'platform_name', 'domain_name', 'option_set', 'timestamp(lastacc_time, 0)']
     @select = tsmdb_select(@columns, 'nodes', "node_name like \'%#{@filter}%\'")
@@ -53,8 +57,31 @@ class NodesController < ApplicationController
       result = qtsm("update node #{node_name} maxnummp=#{max_mp_allowed}")
     end
 
+    unless params[:backdelete].nil?
+      if params[:backdelete] == 'true'
+        result = qtsm("update node #{node_name} backdelete=yes")
+      elsif params[:backdelete] == 'false'
+        result = qtsm("update node #{node_name} backdelete=no")
+      end
+    end
+
     respond_to do |format|
       format.json { render :json => result.to_json }
     end
+  end
+
+  def delete
+   # User.find(params[:id]).destroy
+    if params[:node_name]
+      result = qtsm("update node #{params[:node_name]} domain='RETIREDNODES'")
+      if result['exit_status'] == 0
+        flash[:success] = "Node successfully switched to 'RETIREDNODES' domain"
+      else
+        flash[:danger] = "Unable to delete node #{params[:node_name]}. Error details: #{result['output']}"
+      end
+    else
+      flash[:danger] = "You must supply a node name to delete"
+    end
+    redirect_to nodes_url(node_name: params[:search])
   end
 end

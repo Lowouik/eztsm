@@ -43,7 +43,7 @@
           <% end -%>
            </th>
     <% end -%>
-    <th width='3%'></th>
+    <th width='7%'></th>
   </tr>
  
   <% @nodes.each do |node| -%>
@@ -51,7 +51,7 @@
       <% node.split(',').each do |node_field| -%>
         <td><%= node_field %></td>
       <% end -%>
-      <td><button type="button" class='btn btn-xs btn-primary has-tooltip' title='View or update node' onclick='getNodeNameFromTable(this)'><span class='glyphicon glyphicon-search'></span></button>
+      <td><button type="button" class='btn btn-xs btn-primary has-tooltip' title='View or update node' onclick='getNodeNameFromTable(this)'><span class='glyphicon glyphicon-search'></span></button><%= link_to node_path(node_name: node.split(',').first, search: @filter), method: :delete, data: { confirm: "You'e about to delete the node #{node.split(',').first}. Are you sure?" }, class: 'btn btn-xs btn-danger has-tooltip', title:'Delete node', 'data-toggle' => 'tooltip' do %><span class='glyphicon glyphicon-trash'></span><% end %></td>  
     </tr>
   <% end -%>
 </table>
