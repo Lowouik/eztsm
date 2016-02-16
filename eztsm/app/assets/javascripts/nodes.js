@@ -51,7 +51,7 @@ function getNodeNameFromTable(row){
             '<row>' +
               '<div class="col-xs-4"></div>' +
               '<div class="col-xs-8">' +
-                '<span id="viewNodeModalBodyMain-password><button id="viewNodeModalBodyMain-password-button" type="button" class="btn btn-default btn-sm">Update Password</button></span>' +
+                '<span id="viewNodeModalBodyMain-password"><button id="viewNodeModalBodyMain-password-button" type="button" class="btn btn-default btn-sm" title="Update Password" onClick="preparePasswordUpdating()">Update Password</button></span>' +
               '</div>' +
               '<br />' +
             '</row>'
@@ -91,6 +91,10 @@ function prepareNodeRenaming(currentNode){
     renameNodeInputWidth = 290
   }
   $('#viewNodeModalBodyMain-node_name').html('<input id="viewNodeModalBodyMain-node_name-inputField" class="string required" style="width:' + renameNodeInputWidth + 'px" type="text" value="' + currentNode + '"/> <span id="viewNodeModalBodyMain-node_name-renameNodeLoadingIcon" class="glyphicon glyphicon-refresh glyphicon-refresh-animate" style="display:none"></span><span id="viewNodeModalBodyMain-node_name-renameNodeOKnCancelButtons"> <button class="btn btn-xs btn-success has-tooltip" title="OK" onclick="renameNode(\'' + currentNode + '\')"><span class="glyphicon glyphicon-ok"></span></button> <button class="btn btn-xs btn-danger has-tooltip" title="Cancel" onclick="cancelNodeRenaming(\'' + currentNode + '\')"><span class="glyphicon glyphicon-remove"></span></button></span>')
+}
+
+function preparePasswordUpdating(){
+  $("#viewNodeModalBodyMain-password").html('<input type="password" placeholder="New password" id="viewNodeModalBodyMain-password-inputField"></input> <span id="viewNodeModalBodyMain-password-updatePasswordLoadingIcon" class="glyphicon glyphicon-refresh glyphicon-refresh-animate" style="display:none"></span><span id="viewNodeModalBodyMain-password-updatePasswordOKnCancelButtons"><button class="btn btn-xs btn-success has-tooltip" title="OK" onclick="changePassword()"><span class="glyphicon glyphicon-ok"></span></button> <button class="btn btn-xs btn-danger has-tooltip" title="Cancel" onclick="cancelPasswordChanging()"><span class="glyphicon glyphicon-remove"></span></button></span>')
 }
 
 function prepareDomainChanging(currentDomain){
@@ -226,6 +230,11 @@ function cancelNodeRenaming(node){
   $('#viewNodeModalBodyErrors').html('')
 }
 
+function cancelPasswordChanging(node){
+  $('#viewNodeModalBodyMain-password').html('<button id="viewNodeModalBodyMain-password-button" type="button" class="btn btn-default btn-sm" title="Update Password" onClick="preparePasswordUpdating()">Update Password</button></span>')
+  $('#viewNodeModalBodyErrors').html('')
+}
+
 function cancelDomainChanging(node, domain){
   $('#viewNodeModalBodyMain-domain_name').html(domain + '<button type="button" id="viewNodeModalBodyMain-domain_name-changeDomainButton" class="btn btn-xs btn-default has-tooltip" title="Change Domain" onclick="prepareDomainChanging(\''  + domain + '\')"><span class="glyphicon glyphicon-option-horizontal"></span></button><span id="viewNodeModalBodyMain-domain_name-changeDomainLoadingIcon" class="glyphicon glyphicon-refresh glyphicon-refresh-animate" style="display:none"></span>')
   $('#viewNodeModalBodyErrors').html('')
@@ -274,6 +283,44 @@ function renameNode(currentName) {
     complete: function(){
       $("#viewNodeModalBodyMain-node_name-renameNodeLoadingIcon").hide()
       $("#viewNodeModalBodyMain-node_name-renameNodeOKnCancelButtons").show()
+    },
+    data: postData
+  });
+}
+
+function changePassword(){
+  var result
+
+  nodeName = $('#viewNodeModalHeader').text()
+  password = $("#viewNodeModalBodyMain-password-inputField").val()
+
+  var postData = {
+    node_name: nodeName,
+    password: password
+  };
+
+  $("#viewNodeModalBodyMain-password-renameNodeOKnCancelButtons").hide()
+  $("#viewNodeModalBodyMain-password-renameNodeLoadingIcon").show()
+
+  $.ajax({
+    type: "POST",
+    dataType: "json",
+    url: '/node/update',
+    data: result,
+    success: function(result){
+      if ( result.exit_status != 0 ){
+        updateError(result['output'])
+      } else {
+      $('#viewNodeModalBodyErrors').html('')
+      cancelPasswordChanging()
+      }
+    },
+    error: function(){
+      genericError()
+    },
+    complete: function(){
+      $("#viewNodeModalBodyMain-password-changeDomainLoadingIcon").hide()
+      $("#viewNodeModalBodyMain-password-changeDomainOKnCancelButtons").show()
     },
     data: postData
   });

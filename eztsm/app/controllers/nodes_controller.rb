@@ -34,24 +34,41 @@ class NodesController < ApplicationController
 
   def update
     node_name = sanitize_for_tsm(params[:node_name])
-    puts node_name
-    puts params[:domain]
     result = Hash.new
     result['output'] = 'No matching parameters' #Error message if no available parameters where given
  
-    #Update domain
+    # Update password
+    if params[:password]
+      password = params[:password]
+      
+      # Check password length is more than 7 characters
+      if password.length > 7
+        # Accept only alphanumerical passwords
+        if password =~ /\A[[:alnum:]]+\z/
+          result = qtsm("update node #{node_name} #{password}")
+        else
+          result['exit_status'] = -1
+          result['output'] = "Password should be alphanumeric only"
+        end
+      else
+        result['exit_status'] = -1
+        result['output'] = "Node's password should be at least 8 characters long."
+      end
+    end
+
+    # Update domain
     if params[:domain]
       domain = sanitize_for_tsm(params[:domain])
       result = qtsm("update node #{node_name} domain=#{domain}")
     end
 
-    #Update option set
+    # Update option set
     if params[:option_set]
       option_set = sanitize_for_tsm(params[:option_set])
       result = qtsm("update node #{node_name} cloptset=#{option_set}")
     end
 
-    #Update max mp allowed
+    # Update max mp allowed
     if params[:max_mp_allowed]
       max_mp_allowed = sanitize_for_tsm(params[:max_mp_allowed])
       result = qtsm("update node #{node_name} maxnummp=#{max_mp_allowed}")
