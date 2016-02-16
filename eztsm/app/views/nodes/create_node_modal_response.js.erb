@@ -1,5 +1,5 @@
 <% if @result['exit_status'] == 0 -%>
   window.location.href='<%= nodes_path(node_name: @node_name) %>'
 <% else -%>
-  $("#createNodeModalBodyErrors").html("<%= escape_javascript(@result['output']) %>")
+  $("#createNodeModalBodyErrors").html("<%= escape_javascript(@error_message) %>")
 <% end %>
