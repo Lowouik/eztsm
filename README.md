@@ -8,7 +8,7 @@ ezTSM's point is to provide a simple way of performing basic operations for non 
 We believe that if you want to go further, and don't bother administrator access the whole nodes data, more evolved tools such as TSM Manager (www.tsmmanager.com) will be more appropriated.
 
 ## Features
-As of 01/19/2016, the supported features are:
+As of 02/17/2016, the supported features are:
 - Authentication
 - Admin backend allowing:
   - Configuration and initialization
@@ -16,15 +16,14 @@ As of 01/19/2016, the supported features are:
 - Node administration
   - Search for nodes
   - View node details
+  - Add
+  - Update
+  - Delete
 
 ## Incoming Features
 - Admin backend allowing:
   - Roles and permissions setting
 - Localization (english + french)
-- Node administration
-  - Add
-  - Update
-  - Delete
 - TSM Status
   - Top 50 biggest filespace
   - Nodes without schedule
