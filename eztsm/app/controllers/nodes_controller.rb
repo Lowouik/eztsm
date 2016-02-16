@@ -71,7 +71,6 @@ class NodesController < ApplicationController
   end
 
   def delete
-   # User.find(params[:id]).destroy
     if params[:node_name]
       result = qtsm("update node #{params[:node_name]} domain='RETIREDNODES'")
       if result['exit_status'] == 0

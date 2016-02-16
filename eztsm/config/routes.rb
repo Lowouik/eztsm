@@ -15,6 +15,9 @@ Rails.application.routes.draw do
   get 'nodes' => 'nodes#index'
   get 'domains' => 'domains#index'
   get 'optsets' => 'optsets#index'
+  get 'schedules' => 'schedules#index'
+  patch 'schedules' => 'schedules#update'
+  get 'active_schedules' => 'schedules#list_by_node'
 
   get 'node' => 'nodes#view'
   post 'node/rename' => 'nodes#rename'

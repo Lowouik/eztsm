@@ -19,7 +19,20 @@ function getNodeNameFromTable(row){
     success: function(node){
       // Fetch node properties then display them
       for (key in node[0]){
-        if (key == 'lastacc_time' || key == 'max_mp_allowed') {
+        if (key == 'max_mp_allowed') {
+          $('#viewNodeModalBodyMain').append(
+            '<hr />' +
+            '<row>' +
+              '<div class="col-xs-4"><strong>VIEW SCHEDULES:</strong></div>' +
+              '<div class="col-xs-8">' +
+                '<span id="viewNodeModalBodyMain-schedules"><span id="viewNodeModalBodyMain-schedules-schedulesDetails"></span><span id="viewNodeModalBodyMain-schedules-getSchedulesLoadingIcon" class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span></span><span id="viewNodeModalBodyMain-schedules-errorField"></span>' +
+              '</div>' +
+              '<br />' +
+            '</row>' +
+            '<hr />'
+          )
+        }
+        if (key == 'lastacc_time') {
           $('#viewNodeModalBodyMain').append('<hr />')
         }
         $('#viewNodeModalBodyMain').append(
@@ -33,6 +46,17 @@ function getNodeNameFromTable(row){
             '<br />' +
           '</row>'
         )
+        if (key == 'node_name') {
+          $('#viewNodeModalBodyMain').append(
+            '<row>' +
+              '<div class="col-xs-4"></div>' +
+              '<div class="col-xs-8">' +
+                '<span id="viewNodeModalBodyMain-password><button id="viewNodeModalBodyMain-password-button" type="button" class="btn btn-default btn-sm">Update Password</button></span>' +
+              '</div>' +
+              '<br />' +
+            '</row>'
+          )
+        }
       }
       // Customize some fields that can be modified through ajax requests
       // Let's start with the node name
@@ -49,6 +73,8 @@ function getNodeNameFromTable(row){
       } 
       $('#viewNodeModalBodyMain-backdelete').html('<input id="viewNodeModalBodyMain-backdelete-switch" type="checkbox" ' + backdeleteSwitchValue + ' data-toggle="toggle" data-on="YES" data-off="NO" data-size="mini" onchange=updateBackDelete()><span id="viewNodeModalBodyMain-backdelete-updateBackDeleteLoadingIcon" class="glyphicon glyphicon-refresh glyphicon-refresh-animate" style="display:none"></span>')
       $('#viewNodeModalBodyMain-backdelete-switch').bootstrapToggle()
+      // Schedules
+      prepareSchedulesChanging(node[0]['node_name'],node[0]['domain_name'])
     },
     error: function(){
       genericError()
@@ -81,7 +107,7 @@ function prepareDomainChanging(currentDomain){
     data: result,
     success: function(result){
       if ( result.exit_status != 0 ){
-        $('#viewNodeModalBodyErrors').html('<span class="text-danger">An error occured while getting domains list. Error details:<br />' + result['output'] + '</span>')
+        $('#viewNodeModalBodyErrors').html('<span class="text-danger">An error occured while getting domains list. Error details:<br />' + result.output + '</span>')
       } else {
         domainsListBox = '<select id="viewNodeModalBodyMain-domain_name-changeDomainSelectBox"> <option> ' + currentDomain + ' </option>'
         result.domains.forEach(function(entry) {
@@ -138,18 +164,75 @@ function prepareOptionSetChanging(currentOptionSet){
   });
 }
 
+function prepareSchedulesChanging(node, domain) {
+
+  var activeSchedulesJSON = []
+  var domainSchedulesJSON = []
+  var activeSchedulesList = []
+
+  // Resetting fields
+  $("#viewNodeModalBodyMain-schedules-schedulesDetails").html('')
+  $("#viewNodeModalBodyMain-schedules-errorField").html('')
+
+  $('#viewNodeModalBodyMain-schedules-getSchedulesLoadingIcon').show()
+
+  $.ajax({
+    type: 'GET',
+    dataType: 'json',
+    url: '/active_schedules?node_name=' + node,
+    data: activeSchedulesJSON,
+    success: function(activeSchedulesJSON){
+      if ( activeSchedulesJSON.exit_status != 0 && activeSchedulesJSON.exit_status != 11 ){ //11 means no schedule associated yet
+        getSchedulesGenericError()
+      } else {
+        activeSchedulesJSON.schedules.forEach(function(schedule){
+          activeSchedulesList.push(schedule.schedule_name)
+        })
+        $.ajax({
+          type: "GET",
+          dataType: "json",
+          url: '/schedules?domain_name=' + domain,
+          data: domainSchedulesJSON,
+          success: function(domainSchedulesJSON){
+            if ( domainSchedulesJSON.exit_status == 11){
+                $("#viewNodeModalBodyMain-schedules-schedulesDetails").html('There are no schedules for this specific domain.')
+            } else if ( domainSchedulesJSON.exit_status != 0 ){
+              getSchedulesGenericError()
+            } else {
+              domainSchedulesJSON.schedules.forEach(function(schedule){
+                if (activeSchedulesList.indexOf(schedule.schedule_name) > -1) {scheduleChecked = 'checked'} else { scheduleChecked = '' } // Schedule name is part of activeSchedulesList Array
+                  $("#viewNodeModalBodyMain-schedules-schedulesDetails").append('<span id="viewNodeModalBodyMain-schedules-' + schedule.schedule_name + 'LoadingIcon" class="glyphicon glyphicon-refresh glyphicon-refresh-animate" style="display:none"></span><input id="viewNodeModalBodyMain-schedules-' + schedule.schedule_name + 'CheckBox" type="checkbox" ' + scheduleChecked + ' data-toggle="toggle" data-on="YES" data-off="NO" data-size="mini" onChange="updateScheduleAssociation(\'' + domain + '\',\'' + schedule.schedule_name + '\')">' + schedule.schedule_name + ' <span id="viewNodeModalBodyMain-schedules-' + schedule.schedule_name + 'Details" class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="top" title="Start time: ' + schedule.starttime + '\nDuration: ' + schedule.duration + ' ' + schedule.durunits.toLowerCase() + '\nDays: ' + schedule.dayofweek + '"></span><br />')
+                $('#viewNodeModalBodyMain-schedules-' + schedule.schedule_name + 'Details').tooltip()
+              })
+            }
+          },
+          error: function(){
+            getSchedulesGenericError()
+          },
+          complete: function(){
+            $('#viewNodeModalBodyMain-schedules-getSchedulesLoadingIcon').hide()
+          }
+        })
+      }
+    },
+    error: function(){
+      getSchedulesGenericError()
+    }
+  })
+}
+
 function cancelNodeRenaming(node){
-  $('#viewNodeModalBodyMain-node_name').html(node + ' <button type="button" id="viewNodeModalBodyMain-node_name-renameNodeButton" class="btn btn-xs btn-default has-tooltip" title="Rename" onclick="prepareNodeRenaming(\'' + node + '\')"><span class="glyphicon glyphicon-option-horizontal"></span></button>')
+  $('#viewNodeModalBodyMain-node_name').html(node + '<button type="button" id="viewNodeModalBodyMain-node_name-renameNodeButton" class="btn btn-xs btn-default has-tooltip" title="Rename" onclick="prepareNodeRenaming(\'' + node + '\')"><span class="glyphicon glyphicon-option-horizontal"></span></button>')
   $('#viewNodeModalBodyErrors').html('')
 }
 
 function cancelDomainChanging(node, domain){
-  $('#viewNodeModalBodyMain-domain_name').html(domain + ' <button type="button" id="viewNodeModalBodyMain-domain_name-changeDomainButton" class="btn btn-xs btn-default has-tooltip" title="Change Domain" onclick="prepareDomainChanging(\'' + node + '\', \'' + domain + '\')"><span class="glyphicon glyphicon-option-horizontal"></span></button><span id="viewNodeModalBodyMain-domain_name-changeDomainLoadingIcon" class="glyphicon glyphicon-refresh glyphicon-refresh-animate" style="display:none"></span>')
+  $('#viewNodeModalBodyMain-domain_name').html(domain + '<button type="button" id="viewNodeModalBodyMain-domain_name-changeDomainButton" class="btn btn-xs btn-default has-tooltip" title="Change Domain" onclick="prepareDomainChanging(\''  + domain + '\')"><span class="glyphicon glyphicon-option-horizontal"></span></button><span id="viewNodeModalBodyMain-domain_name-changeDomainLoadingIcon" class="glyphicon glyphicon-refresh glyphicon-refresh-animate" style="display:none"></span>')
   $('#viewNodeModalBodyErrors').html('')
 }
 
 function cancelOptionSetChanging(node, optset){
-  $('#viewNodeModalBodyMain-option_set').html(optset + ' <button type="button" id="viewNodeModalBodyMain-option_set-changeOptionSetButton" class="btn btn-xs btn-default has-tooltip" title="Change Option Set" onclick="prepareOptionSetChanging(\'' + node + '\', \'' + optset + '\')"><span class="glyphicon glyphicon-option-horizontal"></span></button><span id="viewNodeModalBodyMain-option_set-changeOptionSetLoadingIcon" class="glyphicon glyphicon-refresh glyphicon-refresh-animate" style="display:none"></span>')
+  $('#viewNodeModalBodyMain-option_set').html(optset + '<button type="button" id="viewNodeModalBodyMain-option_set-changeOptionSetButton" class="btn btn-xs btn-default has-tooltip" title="Change Option Set" onclick="prepareOptionSetChanging(\'' + node + '\', \'' + optset + '\')"><span class="glyphicon glyphicon-option-horizontal"></span></button><span id="viewNodeModalBodyMain-option_set-changeOptionSetLoadingIcon" class="glyphicon glyphicon-refresh glyphicon-refresh-animate" style="display:none"></span>')
   $('#viewNodeModalBodyErrors').html('')
 }
 
@@ -218,6 +301,7 @@ function changeDomain(nodeName){
       } else {
       $('#viewNodeModalBodyErrors').html('')
       cancelDomainChanging(nodeName, newDomain)
+      prepareSchedulesChanging(nodeName, newDomain)
       }
     },
     error: function(){
@@ -320,7 +404,7 @@ function updateBackDelete(){
     data: result,
     success: function(result){
       if ( result.exit_status != 0 ){
-        updateError(result['output'])
+        updateError(result.output)
       } else {
       $('#viewNodeModalBodyErrors').html('')
       }
@@ -336,6 +420,44 @@ function updateBackDelete(){
   });
 }
 
+function updateScheduleAssociation(domain, schedule){
+  nodeName = $('#viewNodeModalHeader').text()
+  var result
+  association = $("#viewNodeModalBodyMain-schedules-" + schedule + 'CheckBox').prop('checked')
+
+  $('#viewNodeModalBodyMain-schedules-' + schedule + 'CheckBox').hide()
+  $('#viewNodeModalBodyMain-schedules-' + schedule + 'LoadingIcon').show()
+
+  var postData = {
+    node_name: nodeName,
+    domain_name: domain,
+    schedule_name: schedule,
+    association: association
+  }
+
+  $.ajax({
+    type: "PATCH",
+    dataType: "json",
+    url: '/schedules',
+    data: result,
+    success: function(result){
+      if ( result.exit_status != 0 ){
+        updateScheduleAssociationError(result.output)
+      } else {
+      $('#viewNodeModalBodyErrors').html('')
+      }
+    },
+    error: function(){
+      updateScheduleAssociationError()
+    },
+    complete: function(){
+  $('#viewNodeModalBodyMain-schedules-' + schedule + 'CheckBox').show()
+  $('#viewNodeModalBodyMain-schedules-' + schedule + 'LoadingIcon').hide()
+    },
+    data: postData
+  });
+}
+
 function handleMaxMpAllowedChange(){
   $("#viewNodeModalBodyMain-max_mp_allowed-changeMaxMpAllowedOKnCancelButtons").show()
 }
@@ -343,6 +465,15 @@ function handleMaxMpAllowedChange(){
 function updateError(errorDetails){
   $('#viewNodeModalBodyErrors').html('<span class="text-danger">An error occured while updating node\'s property. Error details:<br />' + errorDetails + '</span>')
 }
+
+function updateScheduleAssociationError(errorDetails){
+  $('#viewNodeModalBodyMain-schedules-errorField').html('<span class="text-danger">An error occured while updating schedule association. Error details:<br />' + errorDetails + '</span>')
+}
+function getSchedulesGenericError(){
+  $('#viewNodeModalBodyMain-schedules-errorField').html('<span class="text-danger">An error occured while trying to retrieve schedules informations. Please try again later or contact your ezTSM administrator.</span>')
+}
+
 function genericError(){
   $('#viewNodeModalBodyErrors').html('<span class="text-danger">An error occured while trying to retrieve node informations. Please try again later or contact your ezTSM administrator.</span>')
 }
+
