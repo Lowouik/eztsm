@@ -83,4 +83,22 @@ class NodesController < ApplicationController
     end
     redirect_to nodes_url(node_name: params[:search])
   end
+
+  def create
+    unless params[:node][:node_name].nil? or params[:node][:password].nil? or params[:node][:domain_name].nil? or params[:node][:opt_set].nil?
+      @node_name = sanitize_for_tsm(params[:node][:node_name])
+      password = sanitize_for_tsm(params[:node][:password])
+      domain_name = sanitize_for_tsm(params[:node][:domain_name])
+      opt_set = sanitize_for_tsm(params[:node][:opt_set])
+
+      @result = qtsm("register node #{@node_name} #{password} domain=#{domain_name} cloptset=#{opt_set}")
+  
+      if @result['exit_status'] == 0
+        flash[:success] = "Node #{@node_name} successfully created"
+      else
+        @error_message = "Unable to create node #{@node_name}. Error details: #{@result['output']}"
+      end
+    end
+    render 'nodes/create_node_modal_response' 
+  end
 end

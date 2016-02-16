@@ -12,6 +12,9 @@
           </span>
         </div>
       </form>
+      <ul class="nav navbar-nav">
+        <li><a href="#" onclick="callCreateNodeModal()">Create node</a></li>
+      </ul>
       <ul class="nav navbar-nav navbar-right">
         <% unless current_user.nil? -%>
           <%if current_user.is_admin -%>
@@ -19,7 +22,7 @@
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="adminDropDown" aria-haspopup="true" aria-expanded="true">Admin <span class="caret"></span></a>
             <ul class="dropdown-menu" role="menu" aria-labelledby="adminDropDownMenu">
               <li><%= link_to 'Settings', admin_settings_path %></li>
-              <li><%= link_to 'Manage users', admin_users_path %></li>
+              <li><%= link_to 'Manage users', admin_users_path, 'data-no-turbolink': true %></li>
             </ul>
           </li>
           <%end -%>
@@ -32,3 +35,4 @@
     </div>
   </div>
 </nav>
+

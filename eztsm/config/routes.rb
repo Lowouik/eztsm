@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   post 'sessions' => 'sessions#create'
 
   get 'nodes' => 'nodes#index'
+  post 'nodes' => 'nodes#create'
   get 'domains' => 'domains#index'
   get 'optsets' => 'optsets#index'
   get 'schedules' => 'schedules#index'

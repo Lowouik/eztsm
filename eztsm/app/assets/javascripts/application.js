@@ -19,7 +19,6 @@
 //= require_tree .
 
 $(document).on("ready page:change", function() {
-
   // Activate bootstrap tooltips
   $('.has-tooltip').tooltip();
 
@@ -29,5 +28,55 @@ $(document).on("ready page:change", function() {
   })
 });
 
+function callCreateNodeModal(){
+  var result
 
- 
+  // Building domains list box
+  $.ajax({
+    type: "GET",
+    dataType: "json",
+    url: '/domains',
+    data: result,
+    success: function(result){
+      if ( result.exit_status != 0 ){
+        $('#createNodeModalBodyErrors').html('<span class="text-danger">An error occured while getting domains list. Error details:<br />' + result.output + '</span>')
+      } else {
+        domainsListBox = ''
+        result.domains.forEach(function(entry) {
+          domainsListBox += ' <option> ' + entry.domain_name + '</option>'
+        })
+        $('#node_domain_name').append(domainsListBox)
+      }
+    },
+    error: function(){
+      $('#createNodeModalBodyErrors').html('<span class="text-danger">An error occured while getting domains list. Error details:<br />' + result.output + '</span>')
+    }
+  });
+
+  // Building opt_set listbox
+  $.ajax({
+    type: "GET",
+    dataType: "json",
+    url: '/optsets',
+    data: result,
+    success: function(result){
+      if ( result.exit_status != 0 ){
+        $('#createNodeModalBodyErrors').html('<span class="text-danger">An error occured while getting option sets list. Error details:<br />' + result.output + '</span>')
+      } else {
+        optionSetsListBox = ''
+        result.optsets.forEach(function(entry) {
+          optionSetsListBox += ' <option> ' + entry.optionset_name + '</option>'
+        })
+        $('#node_opt_set').append(optionSetsListBox)
+      }
+    },
+    error: function(){
+      $('#createNodeModalBodyErrors').html('<span class="text-danger">An error occured while getting option sets list. Error details:<br />' + result.output + '</span>')
+    }
+  });
+
+
+  $('#createNodeModal').modal({
+    show: true
+  }); 
+}

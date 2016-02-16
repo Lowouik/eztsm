@@ -1,0 +1,27 @@
+<div class="modal fade" tabindex="-1" role="dialog" id="createNodeModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h2 class="modal-title">Create Node</h2>
+      </div>
+      <div class="modal-body">
+        <div id="createNodeModalBodyErrors" class="text-danger"></div>
+        <p>
+          <% domains = []; opt_set = [] -%>
+          <%= simple_form_for :node, :url => nodes_path, remote: true, :html => {:role => 'form'} do |f| %>
+            <%= f.input :node_name %>
+            <%= f.input :password %>
+            <%= f.input :domain_name, :collection => domains, :label => "Domain", :include_blank => false %>
+            <%= f.input :opt_set, :collection => opt_set, :label => "Option Set", :include_blank => false %>
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <%= f.button :submit, 'Create node', :class => 'btn btn-primary' %>
+      </div>
+          <% end -%>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
