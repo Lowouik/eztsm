@@ -39,7 +39,7 @@
     <% @columns.each do |column| -%>
       <th><% case column 
              when 'node_name'%> Node
-          <% when 'platform_name' %> OS
+          <% when 'tcp_address' %> IP
           <% when 'domain_name' %> Domain
           <% when 'option_set' %> Client Option Set
           <% when 'timestamp(lastacc_time, 0)' %> Last Access
