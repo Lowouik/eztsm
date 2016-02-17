@@ -25,6 +25,11 @@ Rails.application.routes.draw do
   post 'node/update' => 'nodes#update'
   delete 'node' => 'nodes#delete'
 
+  get 'reports/top50' => 'reports#get_top_50'
+  get 'reports/nodes_without_schedules' => 'reports#nodes_without_schedules'
+  get 'reports/activity' => 'reports#last_7_days_activity'
+  get 'reports/stgpool' => 'reports#show_stgpool'
+
   namespace :admin do
     get 'settings' => 'settings#index'
     resources 'users', :except => [ :show, :new ]
