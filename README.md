@@ -31,7 +31,8 @@ As of 02/17/2016, the supported features are:
   - Storage pool status
 
 ## Installation
-TODO
+- Install rails app
+- Install plugins in TSM user's path
+- Add ssh key to TSM user's .authorized_keys if distant
+- Create RETIREDNODES Domain
 
-## Setup
-TODO
