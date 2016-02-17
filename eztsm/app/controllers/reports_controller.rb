@@ -6,4 +6,12 @@ class ReportsController < ApplicationController
     @columns = @nodes.first
     @nodes.shift
   end
+
+  def nodes_without_schedules
+    @result = tsm_exec('/opt/expl/tsm/nodeWithoutSchedule_EZTSM')
+    @nodes = @result['output'].split(/\n/)
+    @columns = @nodes.first
+    @nodes.shift
+  end
+
 end

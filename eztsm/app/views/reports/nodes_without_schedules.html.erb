@@ -1,0 +1,37 @@
+<div class="jumbotron">
+  <h1>Nodes Without Schedules</h1>
+</div>
+
+<div id='errors'>
+  <h3>
+    <% if @result['exit_status'] != 0 -%>
+      <div class="text-danger text-center">An error occured. Please try again later or contact your ezTSM administrator. Error code: <%= @result['exit_status'] %></div>
+    <% end -%>
+  </h4>
+</div>
+
+<% if @result['exit_status'] == 0 -%>
+<table class="table table-striped">
+  <tr>
+    <% @columns.split(',').each do |column| -%>
+      <th><% case column 
+             when 'NODE_NAME'%> Node
+          <% when 'REG_ADMIN' %> Créateur
+          <% when 'REG_TIME' %> Date de création
+          <% when 'TCP_NAME' %> Nom
+          <% when 'TCP_ADDRESS' %> IP
+          <% when 'DOMAIN_NAME' %> Domain
+          <% end -%>
+           </th>
+    <% end -%>
+  </tr>
+ 
+  <% @nodes.each do |node| -%>
+    <tr class="rowDblClick">
+      <% node.split(',').each do |node_field| -%>
+        <td><%= node_field %></td>
+      <% end -%>
+    </tr>
+  <% end -%>
+</table>
+<% end -%>
