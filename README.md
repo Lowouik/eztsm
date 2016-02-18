@@ -31,6 +31,8 @@ As of 02/18/2016, the supported features are:
 - Localization (english + french)
 - Cached reports in local database
 - View/modify nodes infos from different views (reports, etc.)
+- Advanced nodes search (by domain name, clopt...)
+- Logging
 
 ## Installation
 - Install rails app
