@@ -28,10 +28,10 @@ $(document).on("ready page:change", function() {
 
   $('ul.nav li.dropdown').hover(function() {
     $(this).addClass('active')
-    $(this).find('.dropdown-menu').stop(true, true).delay(50).fadeIn(500);
+    $(this).find('.dropdown-menu').show()
   }, function() {
     $(this).removeClass('active')
-    $(this).find('.dropdown-menu').stop(true, true).delay(50).fadeOut(500);
+    $(this).find('.dropdown-menu').hide()
   });
 });
 
