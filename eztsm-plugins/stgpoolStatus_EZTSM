@@ -1,7 +1,5 @@
 #!/bin/bash
-## DOC: Script permettant de reconnecter la librarie NEO4200 a TSM
 
-## Permet d'obtenir l'etat d'un storage pool
 if [ -z $1 ]
 then
 		echo AVAILABLE STGPOOL:
@@ -16,7 +14,7 @@ case $1 in
 	* ) STGPOOL=$1;;
 esac
 
-echo ETAT DES STORAGE POOL:
+echo STORAGE POOL STATUSES:
 echo
 
 for i in $1; do 
@@ -39,24 +37,24 @@ PENDING_TODAY=$(qtsm "select count(1) from volumes where STGPOOL_NAME = '$i' and
 PENDING_24h=$(qtsm "select count(1) from volumes where STGPOOL_NAME = '$i' and STATUS = 'PENDING' and PENDING_DATE> TIMESTAMP(current timestamp - 48 hours) and PENDING_DATE< TIMESTAMP(current timestamp - 24 hours)" | grep -o "[0-9]*")
 PENDING_48h=$(qtsm "select count(1) from volumes where STGPOOL_NAME = '$i' and STATUS = 'PENDING' and PENDING_DATE> TIMESTAMP(current timestamp - 24 hours)" | grep -o "[0-9]*")
 echo
-[ $PENDING_TODAY -gt "0" ] && echo "$PENDING_TODAY volumes en PENDING seront liberes aujourd'hui"
-[ $PENDING_24h -gt "0" ] && echo "$PENDING_24h volumes seront liberes dans les prochaines 24h"
-[ $PENDING_48h -gt "0" ] && echo "$PENDING_48h volumes seront liberes dans les prochaines 48h"
+[ $PENDING_TODAY -gt "0" ] && echo "$PENDING_TODAY volumes are PENDING and will be freed today"
+[ $PENDING_24h -gt "0" ] && echo "$PENDING_24h volumes are to be freed within 24h"
+[ $PENDING_48h -gt "0" ] && echo "$PENDING_48h volumes are to be freed within 48h"
 
 echo 
-echo Taux de remplissage des volumes:
+echo Volumes filling percentages:
 qtsm "select concat(concat(cast(round(pct_utilized/10)*10-5 as varchar(3)),'% to '),concat(cast(round(pct_utilized/10)*10+5 as varchar(3)),'%')) as tranche,count(*) from volumes where stgpool_name='$STGPOOL' and status not in ('EMPTY','PENDING') group by concat(concat(cast(round(pct_utilized/10)*10-5 as varchar(3)),'% to '),concat(cast(round(pct_utilized/10)*10+5 as varchar(3)),'%')) order by avg(pct_utilized)"
 echo
 
-	REUSEDELAY=$(qtsmb "select REUSEDELAY from STGPOOLS where STGPOOL_NAME = 'APIS-SAN'")
+	REUSEDELAY=$(qtsmb "select REUSEDELAY from STGPOOLS where STGPOOL_NAME = '$1'")
 	
 	if [ ${REUSEDELAY} -ne 2 ]
 		then
-			echo "ATTENTION!!! Le pramaetre REUSEDELAY n'est a configure a 2 mais a: ${REUSEDELAY}"
-			echo "Si ce n'est pas volontaire il faut imperativement remettre ce parametre a 2"
+			echo "WARNING!!! REUSEDELAY parameter is set to ${REUSEDELAY} instead of 2"
+			echo "If this is unattended, quickly set it back to 2"
 			echo
 		else
-			echo "REUSEDELAY pour $i configure a: ${REUSEDELAY}"
+			echo "REUSEDELAY for $i is set to: ${REUSEDELAY}"
 			echo
 	fi
 done
