@@ -25,6 +25,14 @@ $(document).on("ready page:change", function() {
   $("#viewNodeModal").on('hidden.bs.modal', function () {
     document.location.reload();
   })
+
+  $('ul.nav li.dropdown').hover(function() {
+    $(this).addClass('active')
+    $(this).find('.dropdown-menu').stop(true, true).delay(50).fadeIn(500);
+  }, function() {
+    $(this).removeClass('active')
+    $(this).find('.dropdown-menu').stop(true, true).delay(50).fadeOut(500);
+  });
 });
 
 function callCreateNodeModal(){

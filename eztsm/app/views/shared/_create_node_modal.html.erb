@@ -10,8 +10,8 @@
         <p>
           <% domains = []; opt_set = [] -%>
           <%= simple_form_for :node, :url => nodes_path, remote: true, :html => {:role => 'form'} do |f| %>
-            <%= f.input :node_name %>
-            <%= f.input :password %>
+            <%= f.input :node_name, html: {autocomplete: 'off'} %>
+            <%= f.input :password, html: {autocomplete: 'off'} %>
             <%= f.input :domain_name, :collection => domains, :label => "Domain", :include_blank => false %>
             <%= f.input :opt_set, :collection => opt_set, :label => "Option Set", :include_blank => false %>
         </p>
