@@ -1,0 +1,5 @@
+#!/bin/bash
+## DOC: Script permettant de lister les noeud TSM n'yant pas de schedule associe
+
+echo "NODE_NAME,REG_ADMIN,REG_TIME,TCP_NAME,TCP_ADDRESS,DOMAINE_NAME"
+for i in $(qtsm "SELECT node_name FROM nodes WHERE node_name NOT IN (SELECT node_name FROM associations)" | egrep -vi 'rman|tdp'); do qtsmc "select NODE_NAME,REG_ADMIN,REG_TIME,TCP_NAME,TCP_ADDRESS,DOMAIN_NAME from NODES where NODE_NAME = '$i'" | grep -v RETIREDNODES;done

@@ -1,0 +1,22 @@
+#!/bin/bash
+## DOC: script qui permet d'avoir des infos sur les 7 derniers jours
+
+echo
+echo "<h4>Total backup data during the last 7 days:</h4>"
+qtsm "select TRUNC(START_TIME),CONCAT('Total backup data ',CONCAT(SUM(BYTES)/1024/1024/1024, ' GB')) from SUMMARY where START_TIME>current timestamp- 7 DAYS and END_TIME<current timestamp and ACTIVITY IN ('BACKUP','ARCHIVE') group by TRUNC(START_TIME)"| awk '{ $2=""; print "<bold>",$1,"</bold>","\t",$3,$4,$5,$6,$7 }'
+echo
+echo
+echo "<h4>Total restored data:</h4>"
+qtsm "select TRUNC(START_TIME),CONCAT('Total restore data ',CONCAT(SUM(BYTES)/1024/1024, ' MB')) from SUMMARY where START_TIME>current timestamp- 7 DAYS and END_TIME<current timestamp and ACTIVITY = 'RESTORE' group by TRUNC(START_TIME)"| awk '{ $2=""; print "<bold>",$1,"</bold>","\t",$3,$4,$5,$6,$7 }'
+echo
+echo
+echo "<h4>Total mounted tapes during the last 7 days:</h4>"
+qtsm "select TRUNC(START_TIME),CONCAT('Tapes mounted: ',COUNT(*)) from SUMMARY where START_TIME>current timestamp- 7 DAYS and END_TIME<current timestamp and ACTIVITY='TAPE MOUNT' group by TRUNC(START_TIME)"| awk '{ $2=""; print "<bold>",$1,"</bold>","\t",$3,$4,$5,$6 }'
+echo
+echo
+echo "<h4>Total data reclamed during the last 7 days:</h4>"
+qtsm "select TRUNC(START_TIME),CONCAT('Total reclamed data ',CONCAT(SUM(BYTES)/1024/1024/1024, ' GB')) from SUMMARY where START_TIME>current timestamp- 7 DAYS and END_TIME<current timestamp and ACTIVITY='RECLAMATION' group by TRUNC(START_TIME)"| awk '{ $2=""; print "<bold>",$1,"</bold>","\t",$3,$4,$5,$6,$7 }'
+echo
+echo
+echo "<h4>Total STGPOOL backed up data during the last 7 days:</h4>"
+qtsm "select TRUNC(START_TIME),CONCAT('Total STGPOOL backed up data ',CONCAT(SUM(BYTES)/1024/1024/1024, ' GB')) from SUMMARY where START_TIME>current timestamp- 7 DAYS and END_TIME<current timestamp and ACTIVITY='STGPOOL BACKUP' group by TRUNC(START_TIME)"| awk '{ $2=""; print "<bold>",$1,"</bold>","\t",$3,$4,$5,$6,$7,$8,$9 }'
