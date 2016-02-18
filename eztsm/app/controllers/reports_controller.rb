@@ -14,4 +14,24 @@ class ReportsController < ApplicationController
     @nodes.shift
   end
 
+  def last_7_days_activity
+    @result = tsm_exec('/opt/expl/tsm/tsm7daysstats_EZTSM')
+  end
+
+  def stgpools_index
+    @result = tsmdb_select(['stgpool_name'], 'stgpools')
+    @stgpools = @result['output'].split(/\n/)
+  end
+
+  def show_stgpool
+    if params[:stgpool_name].nil?
+      stgpool_name = 'ALL'
+    else
+      stgpool_name = params[:stgpool_name]
+    end
+
+    @result = tsm_exec("/opt/expl/tsm/stgpoolStatus_EZTSM #{stgpool_name}")
+
+  end
+
 end

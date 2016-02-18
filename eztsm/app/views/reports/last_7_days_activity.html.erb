@@ -1,0 +1,14 @@
+<div class="jumbotron">
+  <h1>Last 7 days activity</h1>
+</div>
+
+<div id='errors'>
+  <h3>
+    <% if @result['exit_status'] != 0 -%>
+      <div class="text-danger text-center">An error occured. Please try again later or contact your ezTSM administrator. Error code: <%= @result['exit_status'] %></div>
+    <% end -%>
+  </h4>
+</div>
+
+<%= raw(simple_format(@result['output'])) %>
+

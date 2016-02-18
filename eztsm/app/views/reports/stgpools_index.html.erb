@@ -1,0 +1,28 @@
+<div class="jumbotron">
+  <h1>Storage pools status</h1>
+</div>
+
+<div id='errors'>
+  <h3>
+    <% if @result['exit_status'] != 0 -%>
+      <div class="text-danger text-center">An error occured. Please try again later or contact your ezTSM administrator. Error code: <%= @result['exit_status'] %></div>
+    <% end -%>
+  </h4>
+</div>
+
+<div class="text-center">
+  <form role="form" id="stgpoolStatusForm" novalidate="novalidate" class="simple_form stgpool" action="/reports/stgpool" accept-charset="UTF-8" data-remote="true" method="get">
+    <input name="utf8" type="hidden" value="✓">
+    Select a storage pool to query:
+    <select class="select required" name="stgpool_name">
+    <% @stgpools.each do |stgpool| -%>
+      <option><%= stgpool %></option>
+    <% end -%>
+    </select>
+    <input type="submit" id="stgpoolStatusOKButton" name="commit" value="OK" class="btn btn-primary submit">
+    <span id="stgpoolStatusLoadingIcon" class="glyphicon glyphicon-refresh glyphicon-refresh-animate" style="display:none"></span>
+  </form>
+</div>
+<br />
+<div id="stgpoolStatus"></div>
+

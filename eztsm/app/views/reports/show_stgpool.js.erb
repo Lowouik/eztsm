@@ -1,0 +1,6 @@
+<% if @result['exit_status'] == 0 %>
+  $('#stgpoolStatus').html('<%= escape_javascript(raw(simple_format(@result['output']))) %>')
+<% else %>
+  $('#stgpoolStatus').html('<span class="text-danger">An error occured while trying to retrieve storage pool\'s informations</span>)
+<% end %>
+

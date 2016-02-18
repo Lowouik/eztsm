@@ -28,6 +28,7 @@ Rails.application.routes.draw do
   get 'reports/top50' => 'reports#get_top_50'
   get 'reports/orphaned_nodes' => 'reports#nodes_without_schedules'
   get 'reports/activity' => 'reports#last_7_days_activity'
+  get 'reports/stgpools' => 'reports#stgpools_index'
   get 'reports/stgpool' => 'reports#show_stgpool'
 
   namespace :admin do
