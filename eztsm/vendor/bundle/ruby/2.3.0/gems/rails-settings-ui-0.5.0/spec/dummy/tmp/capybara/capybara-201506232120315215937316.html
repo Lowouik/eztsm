@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Rails settings</title>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='width=device-width, initial-scale=1, maximum-scale=1' name='viewport'>
+<link href="/assets/rails_settings_ui/application.css" media="screen" rel="stylesheet" />
+
+</head>
+<body>
+<div class='container'>
+<div class='navbar navbar-default'>
+<div class='container-fluid'>
+<div class='navbar-header'>
+<a class='navbar-brand' href='/'>Rails settings ui</a>
+</div>
+</div>
+</div>
+<div class='row'><ol class='breadcrumb'>
+<li class='active'>Settings</li>
+</ol>
+<form accept-charset="UTF-8" action="/settings/update_all" class="form" method="post"><div style="display:none"><input name="utf8" type="hidden" value="&#x2713;" /><input name="_method" type="hidden" value="put" /></div>
+<table class='table table-striped'>
+<thead>
+<tr>
+<th>Description</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr data-name='project_name'>
+<td>translation missing: en.settings.attributes.project_name.name</td>
+<td class='setting-value'>
+<div class='form-group '>
+<input class="form-control" id="settings_project_name" name="settings[project_name]" type="text" value="Dummy" />
+</div>
+</td>
+</tr>
+<tr data-name='limit'>
+<td>translation missing: en.settings.attributes.limit.name</td>
+<td class='setting-value'>
+<div class='form-group '>
+<input class="form-control" id="settings_limit" name="settings[limit]" type="text" value="150" />
+</div>
+</td>
+</tr>
+<tr data-name='style'>
+<td>translation missing: en.settings.attributes.style.name</td>
+<td class='setting-value'>
+<div class='form-group '>
+<textarea class="form-control" id="settings_style" name="settings[style]" rows="10">
+{&quot;border_color&quot;=&gt;&quot;e0e0e0&quot;, &quot;block_color&quot;=&gt;&quot;ffffff&quot;, &quot;title&quot;=&gt;{&quot;font&quot;=&gt;&quot;Tahoma&quot;, &quot;size&quot;=&gt;&quot;12&quot;, &quot;color&quot;=&gt;&quot;107821&quot;}}</textarea>
+</div>
+</td>
+</tr>
+<tr data-name='check_something'>
+<td>Check This Out!</td>
+<td class='setting-value'>
+<div class='form-group '>
+<input id="settings_check_something" name="settings[check_something]" type="hidden" value="off" /><input checked="checked" id="settings_check_something" name="settings[check_something]" type="checkbox" /><span class="help-block">You really should check it out!</span>
+</div>
+</td>
+</tr>
+<tr data-name='description'>
+<td>translation missing: en.settings.attributes.description.name</td>
+<td class='setting-value'>
+<div class='form-group '>
+<textarea class="form-control" id="settings_description" name="settings[description]" rows="10">
+But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful.</textarea>
+</div>
+</td>
+</tr>
+<tr data-name='mode'>
+<td>translation missing: en.settings.attributes.mode.name</td>
+<td class='setting-value'>
+<div class='form-group '>
+<input checked="checked" id="settings_mode_auto" name="settings[mode][auto]" style="margin: 0 10px;" type="checkbox" /><label for="settings_mode_auto" style="display: inline-block;">auto</label><input checked="checked" id="settings_mode_manual" name="settings[mode][manual]" style="margin: 0 10px;" type="checkbox" /><label for="settings_mode_manual" style="display: inline-block;">manual</label>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<input class="btn btn-primary btn-lg" name="commit" type="submit" value="Save all" />
+</form>
+
+</div>
+<footer></footer>
+</div>
+</body>
+</html>

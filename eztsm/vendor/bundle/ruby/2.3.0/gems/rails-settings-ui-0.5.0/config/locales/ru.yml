@@ -1,0 +1,12 @@
+ru:
+  settings:
+    index:
+      title: Настройки
+      description: Описание
+      value: Значение
+      save_all: Сохранить
+      settings_include_errors: Ошибка в настройках
+    errors:
+      invalid_numeric: Невалидный формат числа
+      invalid_hash: Невалидный хэш
+      default_missing: Значение по умолчанию отсутствует, но содержится в базе

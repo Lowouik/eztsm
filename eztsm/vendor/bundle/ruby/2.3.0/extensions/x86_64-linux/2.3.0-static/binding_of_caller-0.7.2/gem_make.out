@@ -1,0 +1,16 @@
+current directory: /data/git/eztsm/eztsm/vendor/bundle/ruby/2.3.0/gems/binding_of_caller-0.7.2/ext/binding_of_caller
+/home/dev.gnc/loic.basset/.rbenv/versions/2.3.0/bin/ruby -r ./siteconf20160219-22938-g3zl0r.rb extconf.rb
+
+current directory: /data/git/eztsm/eztsm/vendor/bundle/ruby/2.3.0/gems/binding_of_caller-0.7.2/ext/binding_of_caller
+make "DESTDIR=" clean
+make: *** Aucune règle pour fabriquer la cible « clean ». Arrêt.
+
+current directory: /data/git/eztsm/eztsm/vendor/bundle/ruby/2.3.0/gems/binding_of_caller-0.7.2/ext/binding_of_caller
+make "DESTDIR="
+echo "Nada."
+Nada.
+
+current directory: /data/git/eztsm/eztsm/vendor/bundle/ruby/2.3.0/gems/binding_of_caller-0.7.2/ext/binding_of_caller
+make "DESTDIR=" install
+echo "Nada."
+Nada.

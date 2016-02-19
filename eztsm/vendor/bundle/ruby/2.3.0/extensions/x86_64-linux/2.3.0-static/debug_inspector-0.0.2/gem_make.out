@@ -1,0 +1,15 @@
+current directory: /data/git/eztsm/eztsm/vendor/bundle/ruby/2.3.0/gems/debug_inspector-0.0.2/ext/debug_inspector
+/home/dev.gnc/loic.basset/.rbenv/versions/2.3.0/bin/ruby -r ./siteconf20160219-15104-16q5yw7.rb extconf.rb
+creating Makefile
+
+current directory: /data/git/eztsm/eztsm/vendor/bundle/ruby/2.3.0/gems/debug_inspector-0.0.2/ext/debug_inspector
+make "DESTDIR=" clean
+
+current directory: /data/git/eztsm/eztsm/vendor/bundle/ruby/2.3.0/gems/debug_inspector-0.0.2/ext/debug_inspector
+make "DESTDIR="
+compiling debug_inspector.c
+linking shared-object debug_inspector.so
+
+current directory: /data/git/eztsm/eztsm/vendor/bundle/ruby/2.3.0/gems/debug_inspector-0.0.2/ext/debug_inspector
+make "DESTDIR=" install
+/usr/bin/install -c -m 0755 debug_inspector.so ./.gem.20160219-15104-nx9s1y
