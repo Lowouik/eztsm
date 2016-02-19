@@ -197,7 +197,6 @@ DEPENDENCIES
   rails (= 4.2.5)
   rails-settings-cached (~> 0.4.0)
   rails-settings-ui
-  rake
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
   simple_form
