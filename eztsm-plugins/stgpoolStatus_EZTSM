@@ -4,13 +4,13 @@ if [ -z $1 ]
 then
 		echo AVAILABLE STGPOOL:
 		echo
-		qtsm "select distinct stgpool_name from stgpools"
+		./qtsm "select distinct stgpool_name from stgpools"
 		echo "ALL STORAGE POOLS"
 exit 1
 fi
 
 case $1 in
-	'ALL' ) STGPOOL=$(qtsm "select distinct stgpool_name from stgpools"| grep -v 'DUMMY\|DIRECTORIES');;
+	'ALL' ) STGPOOL=$(./qtsm "select distinct stgpool_name from stgpools"| grep -v 'DUMMY\|DIRECTORIES');;
 	* ) STGPOOL=$1;;
 esac
 
@@ -21,7 +21,7 @@ for i in $1; do
 	echo -e "########## Storage pool: $i ##########"
 	echo
 
-	NBOFVOLUMES=$(qtsm "select count(*) from volumes where stgpool_name='$STGPOOL'")
+	NBOFVOLUMES=$(./qtsm "select count(*) from volumes where stgpool_name='$STGPOOL'")
 	echo "Total volumes in stgpool: " $NBOFVOLUMES 
 
 if [ $NBOFVOLUMES -lt 1 ]
@@ -30,12 +30,12 @@ if [ $NBOFVOLUMES -lt 1 ]
                	echo 
        		exit 0
 	else
-		qtsmb "select STATUS,count(*) from VOLUMES where STGPOOL_NAME='$i' group by STATUS"
+		./qtsmb "select STATUS,count(*) from VOLUMES where STGPOOL_NAME='$i' group by STATUS"
 fi
 
-PENDING_TODAY=$(qtsm "select count(1) from volumes where STGPOOL_NAME = '$i' and STATUS = 'PENDING' and PENDING_DATE< TIMESTAMP(current timestamp - 48 hours)" | grep -o "[0-9]*")
-PENDING_24h=$(qtsm "select count(1) from volumes where STGPOOL_NAME = '$i' and STATUS = 'PENDING' and PENDING_DATE> TIMESTAMP(current timestamp - 48 hours) and PENDING_DATE< TIMESTAMP(current timestamp - 24 hours)" | grep -o "[0-9]*")
-PENDING_48h=$(qtsm "select count(1) from volumes where STGPOOL_NAME = '$i' and STATUS = 'PENDING' and PENDING_DATE> TIMESTAMP(current timestamp - 24 hours)" | grep -o "[0-9]*")
+PENDING_TODAY=$(./qtsm "select count(1) from volumes where STGPOOL_NAME = '$i' and STATUS = 'PENDING' and PENDING_DATE< TIMESTAMP(current timestamp - 48 hours)" | grep -o "[0-9]*")
+PENDING_24h=$(./qtsm "select count(1) from volumes where STGPOOL_NAME = '$i' and STATUS = 'PENDING' and PENDING_DATE> TIMESTAMP(current timestamp - 48 hours) and PENDING_DATE< TIMESTAMP(current timestamp - 24 hours)" | grep -o "[0-9]*")
+PENDING_48h=$(./qtsm "select count(1) from volumes where STGPOOL_NAME = '$i' and STATUS = 'PENDING' and PENDING_DATE> TIMESTAMP(current timestamp - 24 hours)" | grep -o "[0-9]*")
 echo
 [ $PENDING_TODAY -gt "0" ] && echo "$PENDING_TODAY volumes are PENDING and will be freed today"
 [ $PENDING_24h -gt "0" ] && echo "$PENDING_24h volumes are to be freed within 24h"
@@ -43,10 +43,10 @@ echo
 
 echo 
 echo Volumes filling percentages:
-qtsm "select concat(concat(cast(round(pct_utilized/10)*10-5 as varchar(3)),'% to '),concat(cast(round(pct_utilized/10)*10+5 as varchar(3)),'%')) as tranche,count(*) from volumes where stgpool_name='$STGPOOL' and status not in ('EMPTY','PENDING') group by concat(concat(cast(round(pct_utilized/10)*10-5 as varchar(3)),'% to '),concat(cast(round(pct_utilized/10)*10+5 as varchar(3)),'%')) order by avg(pct_utilized)"
+./qtsm "select concat(concat(cast(round(pct_utilized/10)*10-5 as varchar(3)),'% to '),concat(cast(round(pct_utilized/10)*10+5 as varchar(3)),'%')) as tranche,count(*) from volumes where stgpool_name='$STGPOOL' and status not in ('EMPTY','PENDING') group by concat(concat(cast(round(pct_utilized/10)*10-5 as varchar(3)),'% to '),concat(cast(round(pct_utilized/10)*10+5 as varchar(3)),'%')) order by avg(pct_utilized)"
 echo
 
-	REUSEDELAY=$(qtsmb "select REUSEDELAY from STGPOOLS where STGPOOL_NAME = '$1'")
+	REUSEDELAY=$(./qtsmb "select REUSEDELAY from STGPOOLS where STGPOOL_NAME = '$1'")
 	
 	if [ ${REUSEDELAY} -ne 2 ]
 		then

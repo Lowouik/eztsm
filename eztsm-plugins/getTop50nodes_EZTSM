@@ -1,4 +1,4 @@
 #!/bin/bash
 
 echo "NODE_NAME;DOMAIN_NAME;FILESPACE_NAME;PLATFORM_NAME;SIZE in GB"
-qtsmc "SELECT occ.node_name, node.domain_name,fs.filespace_name, node.platform_name, CAST(FLOAT(SUM(logical_mb)) / 1024 AS DEC(8)) as GB FROM occupancy occ, nodes node,filespaces fs WHERE occ.node_name=node.node_name and fs.node_name=occ.node_name and fs.filespace_id=occ.filespace_id GROUP BY occ.node_name,node.domain_name,node.platform_name,fs.filespace_name ORDER BY GB DESC" | head -50 | sed -e 's/,/;/g'
+./qtsmc "SELECT occ.node_name, node.domain_name,fs.filespace_name, node.platform_name, CAST(FLOAT(SUM(logical_mb)) / 1024 AS DEC(8)) as GB FROM occupancy occ, nodes node,filespaces fs WHERE occ.node_name=node.node_name and fs.node_name=occ.node_name and fs.filespace_id=occ.filespace_id GROUP BY occ.node_name,node.domain_name,node.platform_name,fs.filespace_name ORDER BY GB DESC" | head -50 | sed -e 's/,/;/g'

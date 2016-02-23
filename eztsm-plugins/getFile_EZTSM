@@ -13,5 +13,5 @@ echo "##"
 echo "#    node_name: $1"
 echo "#    file_name: $2"
 echo
-qtsm "select NODE_NAME,FILESPACE_NAME,HL_NAME,LL_NAME,BACKUP_DATE,CLASS_NAME,STATE from backups where NODE_NAME LIKE UPPER('%$1%') and upper(LL_NAME) LIKE UPPER('%$2%')"
+./qtsm "select NODE_NAME,FILESPACE_NAME,HL_NAME,LL_NAME,BACKUP_DATE,CLASS_NAME,STATE from backups where NODE_NAME LIKE UPPER('%$1%') and upper(LL_NAME) LIKE UPPER('%$2%')"
 fi
