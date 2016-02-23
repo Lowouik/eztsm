@@ -1,8 +1,7 @@
 #!/bin/bash
 
-export TSMUSER="tsm"
 export LC_ALL="en_US"
 export LANG="en_US"
-PWDFILE="~$TSMUSER/bash_local_pw"
+PWDFILE="~$HOME/bash_local_pw"
 dsmadmc -COMMAdelimited -id=bash_local -password=$(cat $PWDFILE) -DATAONLY=YES "$1"
 

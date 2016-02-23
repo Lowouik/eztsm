@@ -1,5 +1,4 @@
 #!/bin/bash
-## DOC: script que permet de voir combien de versions on a sur un fichier
 
 usage() {
         echo "usage: $(basename "$0") <node_name> <file_name>" 
