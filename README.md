@@ -41,7 +41,7 @@ The ezTSM server needs to be connected to the Internet during the installation p
 
 These instructions has been tested and apply to Centos 7 or Redhat 7. Installing on other distributions may be similar, but you'll be on your own. Please note  that ezTSM can't be installed on Windows, neither work with a Windows hosted TSM Server.
 
-### Prepare system
+### Preparing system
 As root:
 ```
 useradd eztsm
@@ -119,30 +119,41 @@ Authorize access to port 8080 in your firewall configuration, either firewalld o
 ezTSM plugins has to be installed on the TSM server.
 
 On TSM server, create an ezTSM account:
-  useradd ezTSM
+```
+useradd ezTSM
+```
 
 This account must accept passwordless ssh login from the ezTSM server eztsm user. The following link provides the detailed instructions to do so: http://serverfault.com/questions/620411/need-to-make-password-less-login-for-same-linux-server-with-same-user.
 
 As eztsm on ezTSM server, copy the content of /tmp/eztsm/eztsm-plugins to the TSM Server:
-  scp /tmp/eztsm/eztsm-plugins/\* tsm_server.fqdn:bin/
-tsm_server.fqdn refers to the actual TSM Server's name or ip address.
+```
+scp /tmp/eztsm/eztsm-plugins/\* tsm_server.fqdn:bin/
+```
+Where tsm_server.fqdn refers to the actual TSM Server's name or ip address.
 
 If necessary, create bin directory first:
-  mkdir /home/eztsm/bin
+```
+mkdir /home/eztsm/bin
+```
 
 Create a tsm user named 'bash_local' with full permissions. Connect on TSM Server as eztsm and run:
-  echo <bash_local password> > ~/bash_local_pw
-  chmod 600 ~/bash_local_pw
+```
+echo <bash_local password> > ~/bash_local_pw
+chmod 600 ~/bash_local_pw
+```
 Where <bash_local password> is the password of the user you just created in TSM.
 
 You may also need to authorize eztsm user to write tsm log files. For instance, if logs are located in /var/log/tsm:
-  chgrp eztsm /var/log/tsm/\*
-  chgrp eztsm /var/log/tsm/
-  chmod g+w /var/log/tsm/
+```
+chgrp eztsm /var/log/tsm/ -R
+chmod g+w /var/log/tsm/
+```
 
 ### Compatibility between TSM and ezTSM
 When nodes are deleted using ezTSM, they are not really deleted from TSM. They are moved to a specific domain called RETIREDNODES, allowing TSM admin to cancel node deletion. In order to allow node deletion in ezTSM, you need to create this domain. It can be done using this syntax as ezTSM on TSM Server:
-  qtsm "define domain RETIREDNODES"
+```
+qtsm "define domain RETIREDNODES"
+```
 
 ### ezTSM initialization
 ezTSM installation is almost over. The web interface can be accessed using http://<my_eztsm_server.fqn>:8080/ where <my_eztsm_server.fqn> can either be ezTSM server's name or ip address.
