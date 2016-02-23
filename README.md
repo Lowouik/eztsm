@@ -83,7 +83,9 @@ bundle exec rake db:migrate db:seed assets:precompile  RAILS_ENV=production
 ```
 
 Generate a secret key and copy the value to your clipboard
-  bundle exec rake secret
+```
+bundle exec rake secret
+```
 
 As root, create a new file named */etc/systemd/system/eztsm.service* with the following content:
 ```
@@ -105,7 +107,7 @@ TimeoutSec=300
 [Install]
 WantedBy=multi-user.target
 ```
-Note that you need to replace *<value of bundle exec rake secret>* with the value of the earlier generated secret key.
+Note that you need to replace ```<value of bundle exec rake secret>``` with the value of the earlier generated secret key.
 
 Reload systemd and start up eztsm:
 ```
@@ -127,7 +129,7 @@ This account must accept passwordless ssh login from the ezTSM server eztsm user
 
 As eztsm on ezTSM server, copy the content of /tmp/eztsm/eztsm-plugins to the TSM Server:
 ```
-scp /tmp/eztsm/eztsm-plugins/\* tsm_server.fqdn:bin/
+scp /tmp/eztsm/eztsm-plugins/* tsm_server.fqdn:bin/
 ```
 Where tsm_server.fqdn refers to the actual TSM Server's name or ip address.
 
@@ -141,7 +143,7 @@ Create a tsm user named 'bash_local' with full permissions. Connect on TSM Serve
 echo <bash_local password> > ~/bash_local_pw
 chmod 600 ~/bash_local_pw
 ```
-Where <bash_local password> is the password of the user you just created in TSM.
+Where ```<bash_local password>``` is the password of the user you just created in TSM.
 
 You may also need to authorize eztsm user to write tsm log files. For instance, if logs are located in /var/log/tsm:
 ```
