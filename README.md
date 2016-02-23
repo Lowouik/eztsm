@@ -137,6 +137,8 @@ Where <bash_local password> is the password of the user you just created in TSM.
 
 You may also need to authorize eztsm user to write tsm log files. For instance, if logs are located in /var/log/tsm:
   chgrp eztsm /var/log/tsm/\*
+  chgrp eztsm /var/log/tsm/
+  chmod g+w /var/log/tsm/
 
 ### Compatibility between TSM and ezTSM
 When nodes are deleted using ezTSM, they are not really deleted from TSM. They are moved to a specific domain called RETIREDNODES, allowing TSM admin to cancel node deletion. In order to allow node deletion in ezTSM, you need to create this domain. It can be done using this syntax as ezTSM on TSM Server:

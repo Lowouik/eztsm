@@ -1,5 +1,4 @@
 #!/bin/bash
-## DOC: script qui permet d'avoir des infos sur les 7 derniers jours
 
 echo
 echo "<h4>Total backup data during the last 7 days:</h4>"
