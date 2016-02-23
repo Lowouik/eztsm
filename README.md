@@ -1,18 +1,14 @@
 # eztsm
 ezTSM is a web frontend connected to a tsm instance providing an easy, web-oriented, way to interact with TSM.
 
-There are some great tools allowing to one or more TSM Server instances, but we believe these tools are a little hard to handle.
+There are some great tools allowing to manage one or more TSM Server instances, but we believe these tools are a little hard to handle.
 
 ezTSM's point is to provide a simple way of performing basic operations for non expert people. Furthermore, it uses its own authenticating and permissions system, preventing users from having effective rights on TSM and in extension accessing nodes data.
 
-We believe that if you want to go further, and don't bother administrator access the whole nodes data, more evolved tools such as TSM Manager (www.tsmmanager.com) will be more appropriated.
+If you want to go further, and don't bother administrators can access whole nodes data, more evolved tools such as TSM Manager (www.tsmmanager.com) will be more appropriated.
 
 ## Features
-As of 02/18/2016, the supported features are:
-- Authentication
-- Admin backend allowing:
-  - Configuration and initialization
-  - Account management (create update delete)
+As of 02/23/2016, the supported features are:
 - Node administration
   - Search for nodes
   - View node details
@@ -26,8 +22,7 @@ As of 02/18/2016, the supported features are:
   - Storage pool status
 
 ## Incoming Features
-- Admin backend allowing:
-  - Roles and permissions setting
+- Roles and permissions setting
 - Localization (english + french)
 - Cached reports in local database
 - View/modify nodes infos from different views (reports, etc.)
@@ -35,7 +30,7 @@ As of 02/18/2016, the supported features are:
 - Logging
 
 ## Installation
-ezTSM can be installed either on the TSM server  or a dedicated server. As we strongly recommand to use a dedicated server, the following installation instructions will apply to this case. However, we assume you would easily deduce how to transpose the instructions to an installation on the TSM server.
+ezTSM can be installed either on the TSM server or a dedicated server. As we strongly recommand to use a dedicated server, the following installation instructions will apply to this case. However, we assume you would easily deduce how to transpose the instructions to an installation on the TSM server.
 
 The ezTSM server needs to be connected to the Internet during the installation process. This access won't be necessary anymore as soon as the installation is over.
 
