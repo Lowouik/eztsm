@@ -158,7 +158,7 @@ qtsm "define domain RETIREDNODES"
 ```
 
 ### ezTSM initialization
-ezTSM installation is almost over. The web interface can be accessed using http://<my_eztsm_server.fqn>:8080/ where <my_eztsm_server.fqn> can either be ezTSM server's name or ip address.
+ezTSM installation is almost over. The web interface can be accessed using http://my_eztsm_server.fqdn:8080/ where my_eztsm_server.fqdn can either be ezTSM server's name or ip address.
 Log in using admin/admin credentials. You'll be redirected to the initialization menu. You need to specify a few informations, like TSM Server fqdn or ip address, ssh user to connect with. In case you didn't installed ezTSM on TSM Server, don't forget to uncheck the 'TSM server is local' checkbox.
 
 Once ezTSM is initialized, we recommand you go to Admin/Manage Users menu and change admin user's password.
