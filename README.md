@@ -34,7 +34,7 @@ ezTSM can be installed either on the TSM server or a dedicated server. As we str
 
 The ezTSM server needs to be connected to the Internet during the installation process. This access won't be necessary anymore as soon as the installation is over.
 
-These instructions has been tested and apply to Centos 7 or Redhat 7. Installing on other distributions may be similar, but you'll be on your own. Please note  that ezTSM can't be installed on Windows, neither work with a Windows hosted TSM Server.
+These instructions have been tested and apply to Centos 7 or Redhat 7. Installing on other distributions may be similar, but you'll be on your own. Please note  that ezTSM can't be installed on Windows, nor work with a Windows hosted TSM Server.
 
 ### Preparing system
 As root:
@@ -104,7 +104,7 @@ WantedBy=multi-user.target
 ```
 Note that you need to replace ```<value of bundle exec rake secret>``` with the value of the earlier generated secret key.
 
-Reload systemd and start up eztsm:
+Reload systemd and start up ezTSM:
 ```
 systemctl daemon-reload
 systemctl start eztsm
@@ -113,14 +113,14 @@ systemctl start eztsm
 Authorize access to port 8080 in your firewall configuration, either firewalld or iptables.
 
 ### Installing ezTSM plugins
-ezTSM plugins has to be installed on the TSM server.
+ezTSM plugins have to be installed on the TSM server.
 
 On TSM server, create an ezTSM account:
 ```
 useradd ezTSM
 ```
 
-This account must accept passwordless ssh login from the ezTSM server eztsm user. The following link provides the detailed instructions to do so: http://serverfault.com/questions/620411/need-to-make-password-less-login-for-same-linux-server-with-same-user.
+This account must accept passwordless ssh login from the ezTSM server's eztsm user. The following link provides the detailed instructions to do so: http://serverfault.com/questions/620411/need-to-make-password-less-login-for-same-linux-server-with-same-user.
 
 As eztsm on ezTSM server, copy the content of /tmp/eztsm/eztsm-plugins to the TSM Server:
 ```
