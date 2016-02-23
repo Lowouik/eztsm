@@ -31,7 +31,7 @@ class ApplicationController < ActionController::Base
       tsm_exec['output'] = `#{cmd}`
       tsm_exec['exit_status'] = $?.exitstatus
     else
-      tsm_exec['output'] = `ssh -p #{Setting.ssh_port} #{Setting.ssh_user}@#{Setting.tsm_address} "source bash_profile; #{cmd}"`
+      tsm_exec['output'] = `ssh -p #{Setting.ssh_port} #{Setting.ssh_user}@#{Setting.tsm_address} "#{cmd}"`
       tsm_exec['exit_status'] = $?.exitstatus
     end
     tsm_exec
@@ -42,12 +42,12 @@ class ApplicationController < ActionController::Base
   # exit_status => the exit status of the command
   # output => the output
   def qtsm(cmd)
-    tsm_exec('qtsm \\" ' + cmd + '\\"')
+    tsm_exec('bin/qtsm \\" ' + cmd + '\\"')
   end
 
   # Execute a select query on TSM database
   def tsmdb_select(columns, table, where_clauses = nil)
-    select_statement = 'qtsmc \\"select ' + columns.join(', ') + " from #{table}"
+    select_statement = 'bin/tsmc \\"select ' + columns.join(', ') + " from #{table}"
     if where_clauses.nil?
       select_statement += '\\"'
     else

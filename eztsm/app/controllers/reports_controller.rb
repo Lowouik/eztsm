@@ -1,21 +1,21 @@
 class ReportsController < ApplicationController
 
   def get_top_50
-    @result = tsm_exec('/opt/expl/tsm/getTop50nodes_EZTSM')
+    @result = tsm_exec('bin/getTop50nodes_EZTSM')
     @nodes = @result['output'].split(/\n/)
     @columns = @nodes.first
     @nodes.shift
   end
 
   def nodes_without_schedules
-    @result = tsm_exec('/opt/expl/tsm/nodeWithoutSchedule_EZTSM')
+    @result = tsm_exec('bin/nodeWithoutSchedule_EZTSM')
     @nodes = @result['output'].split(/\n/)
     @columns = @nodes.first
     @nodes.shift
   end
 
   def last_7_days_activity
-    @result = tsm_exec('/opt/expl/tsm/tsm7daysstats_EZTSM')
+    @result = tsm_exec('bin/tsm7daysstats_EZTSM')
   end
 
   def stgpools_index
@@ -30,7 +30,7 @@ class ReportsController < ApplicationController
       stgpool_name = params[:stgpool_name]
     end
 
-    @result = tsm_exec("/opt/expl/tsm/stgpoolStatus_EZTSM #{stgpool_name}")
+    @result = tsm_exec("bin/stgpoolStatus_EZTSM #{stgpool_name}")
 
   end
 
