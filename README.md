@@ -1,4 +1,4 @@
-# eztsm
+# ezTSM
 ezTSM is a web frontend connected to a tsm instance providing an easy, web-oriented, way to interact with TSM.
 
 There are some great tools allowing to manage one or more TSM Server instances, but we believe these tools are a little hard to handle.
