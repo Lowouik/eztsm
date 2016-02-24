@@ -157,3 +157,7 @@ ezTSM installation is almost over. The web interface can be accessed using http:
 Log in using admin/admin credentials. You'll be redirected to the initialization menu. You need to specify a few informations, like TSM Server fqdn or ip address, ssh user to connect with. In case you didn't installed ezTSM on TSM Server, don't forget to uncheck the 'TSM server is local' checkbox.
 
 Once ezTSM is initialized, we recommand you go to Admin/Manage Users menu and change admin user's password.
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/Lowouik/eztsm/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
