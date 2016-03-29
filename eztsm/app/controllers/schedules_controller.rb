@@ -29,7 +29,7 @@ class SchedulesController < ApplicationController
 
     @filter = sanitize_for_tsm(@node_name).upcase
     @columns = ['schedule_name']
-    @select = tsmdb_select(@columns, 'associations', "node_name like \'%#{@filter}%\'")
+    @select = tsmdb_select(@columns, 'associations', "node_name = \'%#{@filter}%\'")
     @nodes = @select['output'].split(/\n/)
     result_json = Hash.new
 
