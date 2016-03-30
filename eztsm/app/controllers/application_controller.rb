@@ -47,7 +47,7 @@ class ApplicationController < ActionController::Base
 
   # Execute a select query on TSM database
   def tsmdb_select(columns, table, where_clauses = nil)
-    select_statement = 'bin/tsmc \\"select ' + columns.join(', ') + " from #{table}"
+    select_statement = 'bin/qtsmc \\"select ' + columns.join(', ') + " from #{table}"
     if where_clauses.nil?
       select_statement += '\\"'
     else
