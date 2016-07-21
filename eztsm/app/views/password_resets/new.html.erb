@@ -1,0 +1,6 @@
+<%= simple_form_for @user, url: change_password_path, :html => {:role => 'form'} do |f| %>
+  <%= f.input :password, label: 'New password' %>
+  <%= f.input :password_confirmation, label: 'Confirm new password' %>
+  <%= f.button :submit, 'Update', :class => 'btn btn-primary' %>
+<% end -%>
+

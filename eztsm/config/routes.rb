@@ -12,6 +12,9 @@ Rails.application.routes.draw do
   get 'sessions/new'
   post 'sessions' => 'sessions#create'
 
+  get 'change_password' => 'password_resets#new'
+  patch 'change_password' => 'password_resets#edit'
+
   get 'nodes' => 'nodes#index'
   post 'nodes' => 'nodes#create'
   get 'domains' => 'domains#index'
