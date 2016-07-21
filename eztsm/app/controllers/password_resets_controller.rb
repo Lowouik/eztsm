@@ -11,14 +11,14 @@ class PasswordResetsController < ApplicationController
     if params[:user][:password] != params[:user][:password_confirmation]
       flash.now[:danger] = 'Password and confirmation password do not match'
       render action: 'new'
+    elsif params[:user][:password].empty?
+      flash.now[:danger] = 'Password cannot be blank'
+      render action: 'new'  
     elsif @user.update_attributes(params.require(:user).permit(:password))
       flash[:success] = 'Your password has been successfully updated'
       redirect_to root_url
     else
-      flash[:danger] = 'Unable to update your password'
-      @user.errors.full_messages.each do |msg|
-        flash[:danger] += msg
-      end
+      flash[:danger] = 'Unable to update your password: '
       render action: 'new'
     end
   end 
