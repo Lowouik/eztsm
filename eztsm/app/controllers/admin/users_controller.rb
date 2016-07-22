@@ -13,7 +13,7 @@ class Admin::UsersController < AdminController
     if @user.save
       respond_to do |format|
         format.js {
-          log_event("created user #{@user.login}")
+          log_event("Created user #{@user.login}")
           flash[:success] = "User #{@user.login} successfully created"
           render 'admin/users/user_modals_response'
         }
@@ -31,7 +31,7 @@ class Admin::UsersController < AdminController
     if @user.update_attributes(user_params)
       respond_to do |format|
         format.js { 
-          log_event("updated user #{@user.login}")
+          log_event("Updated user #{@user.login}")
           flash[:success] = "User #{@user.login} successfully updated"
           render 'admin/users/user_modals_response'
         }
@@ -46,7 +46,7 @@ class Admin::UsersController < AdminController
   def destroy
     @user = User.find(params[:id])
     if @user.destroy
-      log_event("deleted user #{@user.login}")
+      log_event("Deleted user #{@user.login}")
       flash[:success] = "User deleted"
       redirect_to admin_users_url
     end
