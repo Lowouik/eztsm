@@ -2,6 +2,15 @@
   <h1> View events</h1>
 </div>
 
+Filter events:
+<%= form_tag admin_events_path, {method: :get, class: 'form_inline'} do %>
+  User: <%= text_field_tag :by_user, @by_user %>
+  After Date: <%= date_field_tag :after, @after %>
+  Before Date: <%= date_field_tag :before, @before %>
+  <%= submit_tag 'Apply filter', :class => 'btn btn-primary' %>
+<% end -%>
+
+
 <br />
 <%= will_paginate @events, renderer: BootstrapPagination::Rails %>
 <table class="table table-striped">

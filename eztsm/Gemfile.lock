@@ -74,6 +74,9 @@ GEM
       haml (>= 4.0.6, < 5.0)
       html2haml (>= 1.0.1)
       railties (>= 4.0.1)
+    has_scope (0.7.0)
+      actionpack (>= 4.1, < 5.1)
+      activesupport (>= 4.1, < 5.1)
     html2haml (2.0.0)
       erubis (~> 2.7.0)
       haml (~> 4.0.0)
@@ -197,6 +200,7 @@ DEPENDENCIES
   byebug
   client_side_validations
   coffee-rails (~> 4.1.0)
+  has_scope
   jbuilder (~> 2.0)
   jquery-rails
   passenger
