@@ -42,6 +42,7 @@ class ApplicationController < ActionController::Base
   # exit_status => the exit status of the command
   # output => the output
   def qtsm(cmd)
+    log_event("Command executed: #{cmd}")
     tsm_exec('bin/qtsm \\" ' + cmd + '\\"')
   end
 
@@ -61,4 +62,7 @@ class ApplicationController < ActionController::Base
     input_string.gsub(/\*/i, '%').gsub(/[^0-9A-Za-z\-\._%]/i, '')
   end
 
+  def log_event(desc)
+    @current_user.events.create(timestamp: Time.now, details: desc)
+  end
 end

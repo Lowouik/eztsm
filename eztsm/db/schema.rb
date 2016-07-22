@@ -11,7 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160124224824) do
+ActiveRecord::Schema.define(version: 20160722015726) do
+
+  create_table "events", force: :cascade do |t|
+    t.datetime "timestamp"
+    t.integer  "user_id"
+    t.text     "details"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "events", ["user_id"], name: "index_events_on_user_id"
 
   create_table "settings", force: :cascade do |t|
     t.string   "var",                   null: false

@@ -13,6 +13,7 @@ class Admin::UsersController < AdminController
     if @user.save
       respond_to do |format|
         format.js {
+          log_event("created user #{@user.login}")
           flash[:success] = "User #{@user.login} successfully created"
           render 'admin/users/user_modals_response'
         }
@@ -27,11 +28,10 @@ class Admin::UsersController < AdminController
   def update
     @user = User.find(params[:id])
     params[:user].delete(:password) if params[:user][:password].blank?
-    puts params
-    puts "user params : " + user_params.to_s
     if @user.update_attributes(user_params)
       respond_to do |format|
         format.js { 
+          log_event("updated user #{@user.login}")
           flash[:success] = "User #{@user.login} successfully updated"
           render 'admin/users/user_modals_response'
         }
@@ -44,9 +44,12 @@ class Admin::UsersController < AdminController
   end
 
   def destroy
-    User.find(params[:id]).destroy
-    flash[:success] = "User deleted"
-    redirect_to admin_users_url
+    @user = User.find(params[:id])
+    if @user.destroy
+      log_event("deleted user #{@user.login}")
+      flash[:success] = "User deleted"
+      redirect_to admin_users_url
+    end
   end
 
   private

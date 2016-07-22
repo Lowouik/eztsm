@@ -35,6 +35,7 @@ Rails.application.routes.draw do
   get 'reports/stgpool' => 'reports#show_stgpool'
 
   namespace :admin do
+    get 'events' => 'events#index'
     get 'settings' => 'settings#index'
     resources 'users', :except => [ :show, :new ]
   end
